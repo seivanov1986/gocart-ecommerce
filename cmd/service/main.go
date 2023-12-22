@@ -13,7 +13,6 @@ import (
 	"github.com/seivanov1986/gocart/external/ajax_manager"
 	"github.com/seivanov1986/gocart/external/observer"
 	"github.com/seivanov1986/gocart/external/widget_manager"
-	"github.com/seivanov1986/gocart/helpers"
 
 	ajaxExample "github.com/seivanov1986/gocart-ecommerce/internal/ajax/example"
 	"github.com/seivanov1986/gocart-ecommerce/internal/widget/example"
@@ -27,8 +26,6 @@ import (
 )
 
 func main() {
-	fmt.Println(helpers.GenerateHashPassword("test"))
-
 	serviceBasePath := os.Getenv("SERVICE_BASE_PATH")
 	if serviceBasePath == "" {
 		panic("service base path is not found")
