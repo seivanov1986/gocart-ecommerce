@@ -295,7 +295,19 @@ func (g *goCart) InitAdminHandles(router *mux.Router) {
 	attributeRouter := router.PathPrefix("/attribute").Subrouter()
 	g.InitAttributeHandles(attributeRouter)
 
+	sefurlRouter := router.PathPrefix("/sefurl").Subrouter()
+	g.InitSefurlHandles(sefurlRouter)
+
 	router.HandleFunc("/ping", g.AuthHandler().Ping).
+		Methods(http.MethodPost, http.MethodOptions)
+}
+
+func (g *goCart) InitSefurlHandles(router *mux.Router) {
+	hub := repository.New(g.database, g.transactionManager)
+	sefurlService := sefUrlService.New(hub)
+	sefurlHandle := sefurl.New(sefurlService)
+
+	router.HandleFunc("/list", sefurlHandle.List).
 		Methods(http.MethodPost, http.MethodOptions)
 }
 

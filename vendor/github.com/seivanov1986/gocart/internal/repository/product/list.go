@@ -24,11 +24,6 @@ type ProductListRow struct {
 	Disabled    int64   `db:"disabled"`
 	CreatedAt   int64   `db:"created_at"`
 	UpdatedAt   int64   `db:"updated_at"`
-	ImagePath   *string `db:"image_path"`
-	ImageName   *string `db:"image_name"`
-	Title       *string `db:"title"`
-	Keywords    *string `db:"keywords"`
-	Description *string `db:"description"`
 }
 
 func (i *repository) List(ctx context.Context, in ProductListInput) (*ProductListOut, error) {
@@ -39,11 +34,8 @@ func (i *repository) List(ctx context.Context, in ProductListInput) (*ProductLis
 		`SELECT    
 				p.id, p.name, p.content, p.id_meta, 
 				p.sort, p.price, p.id_image, p.disabled,
-				p.created_at, p.updated_at, i.path as image_path, i.name as image_name,
-				m.title, m.keywords, m.description
+				p.created_at, p.updated_at
 			FROM product p
-          	LEFT JOIN image i ON i.id = p.id_image
-			LEFT JOIN meta m ON m.id = p.id_meta
           LIMIT ?, ?`,
 		in.Page*limit, limit)
 	if err != nil {

@@ -7,12 +7,18 @@ import (
 	"net/http"
 
 	"github.com/seivanov1986/gocart/helpers"
+	"github.com/seivanov1986/gocart/internal/service/category"
+	categoryRepository "github.com/seivanov1986/gocart/internal/repository/category"
 )
 
-type SefUrlListRpcIn struct {
+type CategoryListRpcIn struct {
+	Page     int64
+	ParentID int64
 }
 
-type SefUrlListError struct {
+type CategoryListRpcOut struct {
+	List  []categoryRepository.CategoryListRow
+	Total int64
 }
 
 func (u *handle) List(w http.ResponseWriter, r *http.Request) {
@@ -22,23 +28,35 @@ func (u *handle) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = validateCategoryList(bodyBytes)
+	list, err := validateCategoryList(bodyBytes)
 	if err != nil {
 		helpers.HttpResponse(w, http.StatusBadRequest)
 		return
 	}
 
-	helpers.HttpResponse(w, http.StatusOK)
+	listOut, err := u.service.List(r.Context(), *list)
+	if err != nil {
+		helpers.HttpResponse(w, http.StatusInternalServerError)
+		return
+	}
+
+	helpers.HttpResponse(w, http.StatusOK, CategoryListRpcOut{
+		List:  listOut.List,
+		Total: listOut.Total,
+	})
 }
 
-func validateCategoryList(bodyBytes []byte) ([]int64, error) {
-	listInt := []int64{}
-	userCreateRpcIn := SefUrlListRpcIn{}
+func validateCategoryList(bodyBytes []byte) (*category.CategoryListIn, error) {
+	listInt := category.CategoryListIn{}
+	categoryListRpcIn := CategoryListRpcIn{}
 
-	err := json.Unmarshal(bodyBytes, &userCreateRpcIn)
+	err := json.Unmarshal(bodyBytes, &categoryListRpcIn)
 	if err != nil {
 		return nil, fmt.Errorf(err.Error())
 	}
 
-	return listInt, nil
+	listInt.Page = categoryListRpcIn.Page
+	listInt.ParentID = categoryListRpcIn.ParentID
+
+	return &listInt, nil
 }

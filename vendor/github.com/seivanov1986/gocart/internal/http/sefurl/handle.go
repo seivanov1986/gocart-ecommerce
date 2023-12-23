@@ -5,9 +5,9 @@ import (
 )
 
 type handle struct {
-	sefUrlService sefurl.Service
+	service sefurl.Service
 }
 
-func New(sefUrlService sefurl.Service) *handle {
-	return &handle{sefUrlService: sefUrlService}
+func New(service sefurl.Service) *handle {
+	return &handle{service: service}
 }

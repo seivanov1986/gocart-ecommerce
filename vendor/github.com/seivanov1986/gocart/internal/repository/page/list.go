@@ -2,6 +2,7 @@ package page
 
 import (
 	"context"
+	"fmt"
 )
 
 type PageListInput struct {
@@ -24,6 +25,8 @@ const (
 )
 
 func (i *repository) List(ctx context.Context, in PageListInput) (*PageListOut, error) {
+	fmt.Println("aaa")
+
 	pageRows := []PageListRow{}
 	err := i.db.SelectContext(
 		ctx,
@@ -31,6 +34,7 @@ func (i *repository) List(ctx context.Context, in PageListInput) (*PageListOut, 
 		`SELECT id, name, type FROM page LIMIT ?, ?`,
 		in.Page*limit, limit)
 	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 
@@ -40,6 +44,7 @@ func (i *repository) List(ctx context.Context, in PageListInput) (*PageListOut, 
 		&total,
 		`SELECT COUNT(*) FROM page`)
 	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 

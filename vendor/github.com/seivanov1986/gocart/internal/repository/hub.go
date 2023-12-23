@@ -56,6 +56,7 @@ func New(db sql_client.DataBase, trx sql_client.TransactionManager) *hub {
 		imageToCategory:    image_to_category.New(db),
 		imageToProduct:     image_to_product.New(db),
 		meta:               meta.New(db, trx),
+		page: 				page.New(db, trx),
 		product:            product.New(db, trx),
 		productToCategory:  product_to_category.New(db),
 		sefUrl:             sefurl.New(db, trx),
