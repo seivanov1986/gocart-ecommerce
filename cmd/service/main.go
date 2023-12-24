@@ -50,7 +50,7 @@ func main() {
 
 	widgetManger := widget_manager.New()
 	ajaxManager := ajax_manager.New()
-	ajaxManager.RegisterPath("example", ajaxExample.New())
+	ajaxManager.RegisterPath("outexample", ajaxExample.New())
 	widgetManger.Register("exampleout", example.New())
 
 	sessionManager := session_manager.New()
@@ -61,6 +61,8 @@ func main() {
 		gocart.WithTransactionManager(transactionManager),
 		gocart.WithWidgetManager(widgetManger),
 	)
+
+	goLib.InitAjaxManager(ajaxManager)
 
 	cacheService := goLib.CacheService()
 	cache.Cache.SetProcess(func() {

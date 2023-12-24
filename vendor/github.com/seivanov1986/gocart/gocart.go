@@ -40,6 +40,7 @@ import (
 	userService "github.com/seivanov1986/gocart/internal/service/user"
 
 	"github.com/seivanov1986/gocart/client"
+	exampleAjax "github.com/seivanov1986/gocart/internal/ajax/example"
 	"github.com/seivanov1986/gocart/internal/http/attribute_to_product"
 	"github.com/seivanov1986/gocart/internal/widget/example"
 )
@@ -371,4 +372,9 @@ func (g *goCart) InitAttributeHandles(router *mux.Router) {
 	router.HandleFunc("/update", attributeHandle.Update).Methods(http.MethodPost, http.MethodOptions)
 	router.HandleFunc("/delete", attributeHandle.Delete).Methods(http.MethodPost, http.MethodOptions)
 	router.HandleFunc("/list", attributeHandle.List).Methods(http.MethodPost, http.MethodOptions)
+}
+
+func (g *goCart) InitAjaxManager(manager client.AjaxManager) {
+	ajaxHandler := exampleAjax.New()
+	manager.RegisterPath("inexample", ajaxHandler)
 }

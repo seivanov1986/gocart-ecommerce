@@ -13,7 +13,7 @@ func New() *loggerPlugin {
 }
 
 func (l *loggerPlugin) Execute() (*string, error) {
-	result := "Logger is inactive"
+	result := "output Logger is inactive"
 	return &result, nil
 }
 

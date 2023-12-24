@@ -2,9 +2,9 @@ package client
 
 import (
 	"context"
-	"time"
 	"io"
 	"net/http"
+	"time"
 )
 
 type WidgetManager interface {
@@ -20,6 +20,11 @@ type Widget interface {
 
 type AjaxHandler interface {
 	Execute(header http.Header, body io.ReadCloser) (*string, error)
+}
+
+type AjaxManager interface {
+	RegisterPath(name string, widget AjaxHandler)
+	Handler(w http.ResponseWriter, r *http.Request)
 }
 
 type UrlListRow struct {

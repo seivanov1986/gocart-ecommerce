@@ -16,6 +16,6 @@ func New() *loggerPlugin {
 
 func (l *loggerPlugin) Execute(header http.Header, body io.ReadCloser) (*string, error) {
 	cache.Cache.AddEvent()
-	result := "output example"
+	result := "input example"
 	return &result, nil
 }
