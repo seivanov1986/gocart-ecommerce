@@ -19,7 +19,6 @@ import (
 	ajaxExample "github.com/seivanov1986/gocart-ecommerce/internal/ajax/example"
 	"github.com/seivanov1986/gocart-ecommerce/internal/widget/example"
 	"github.com/seivanov1986/gocart-ecommerce/migrations"
-	"github.com/seivanov1986/gocart-ecommerce/pkg/cache_builder"
 	"github.com/seivanov1986/gocart-ecommerce/pkg/session_manager"
 
 	"github.com/seivanov1986/sql_client/sqlite"
@@ -52,13 +51,11 @@ func main() {
 	ajaxManager := ajax_manager.New()
 	ajaxManager.RegisterPath("example", ajaxExample.New())
 	widgetManger.Register("exampleout", example.New())
-	cacheBuilder := cache_builder.NewBuilder(widgetManger)
 
 	sessionManager := session_manager.New()
 
 	goLib := gocart.New(
 		gocart.WithDatabase(sqliteDBClient),
-		gocart.WithCacheBuilder(cacheBuilder),
 		gocart.WithSessionManager(sessionManager),
 		gocart.WithTransactionManager(transactionManager),
 	)
