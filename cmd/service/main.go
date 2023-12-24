@@ -69,6 +69,8 @@ func main() {
 		cacheService.Make(ctx)
 	})
 
+	cache.Cache.AddEvent()
+
 	corsMiddleware := goLib.CorsMiddleware()
 	commonMiddleware := goLib.CommonMiddleware(serviceBasePath)
 	authMiddleware := goLib.AuthMiddleware()
