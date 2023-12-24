@@ -12,6 +12,7 @@ import (
 
 	"github.com/seivanov1986/gocart"
 	"github.com/seivanov1986/gocart/external/ajax_manager"
+	"github.com/seivanov1986/gocart/external/cache"
 	"github.com/seivanov1986/gocart/external/observer"
 	"github.com/seivanov1986/gocart/external/widget_manager"
 	"github.com/seivanov1986/sql_client"
@@ -58,10 +59,13 @@ func main() {
 		gocart.WithDatabase(sqliteDBClient),
 		gocart.WithSessionManager(sessionManager),
 		gocart.WithTransactionManager(transactionManager),
+		gocart.WithWidgetManager(widgetManger),
 	)
 
 	cacheService := goLib.CacheService()
-	cacheService.Make(ctx)
+	cache.Cache.SetProcess(func() {
+		cacheService.Make(ctx)
+	})
 
 	corsMiddleware := goLib.CorsMiddleware()
 	commonMiddleware := goLib.CommonMiddleware(serviceBasePath)

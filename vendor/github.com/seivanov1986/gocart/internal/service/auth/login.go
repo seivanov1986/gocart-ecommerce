@@ -23,12 +23,10 @@ func (s *service) Login(ctx context.Context, in AuthLoginIn) (*string, error) {
 	}
 
 	sessionId := helpers.GenerateHashSession()
-	fmt.Println(sessionId)
 	err = s.sessionManager.Set(sessionId, 1, 0)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(sessionId)
 
 	return &sessionId, nil
 }

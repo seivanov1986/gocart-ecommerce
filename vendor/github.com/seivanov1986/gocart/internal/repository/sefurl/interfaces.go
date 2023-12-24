@@ -10,4 +10,5 @@ type Repository interface {
 	Update(ctx context.Context, in SefUrlUpdateInput) error
 	DeleteByObjectType(ctx context.Context, ObjectID, Type int64) error
 	List(ctx context.Context, in SefUrlListInput) (*SefUrlListOut, error)
+	ListLimitId(ctx context.Context, offsetID int64) ([]SefUrlListLimitIdRow, error)
 }

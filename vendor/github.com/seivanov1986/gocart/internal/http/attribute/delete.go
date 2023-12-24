@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/seivanov1986/gocart/external/cache"
 	"github.com/seivanov1986/gocart/helpers"
 )
 
@@ -39,6 +40,8 @@ func (u *handle) Delete(w http.ResponseWriter, r *http.Request) {
 	}
 
 	helpers.HttpResponse(w, http.StatusOK)
+
+	cache.Cache.AddEvent()
 }
 
 func validateAttributeDelete(bodyBytes []byte) ([]int64, error) {

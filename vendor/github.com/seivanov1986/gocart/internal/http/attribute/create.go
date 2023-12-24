@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/seivanov1986/gocart/external/cache"
 	"github.com/seivanov1986/gocart/helpers"
 	"github.com/seivanov1986/gocart/internal/service/attribute"
 )
@@ -47,6 +48,8 @@ func (u *handle) Create(w http.ResponseWriter, r *http.Request) {
 	helpers.HttpResponse(w, http.StatusOK, AttributeCreateRpcOut{
 		ID: userid,
 	})
+
+	cache.Cache.AddEvent()
 }
 
 func validateAttributeCreate(bodyBytes []byte) (*attribute.AttributeCreateIn, error) {

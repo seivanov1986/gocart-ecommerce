@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/seivanov1986/gocart/external/cache"
 	"github.com/seivanov1986/gocart/helpers"
 	attribute2 "github.com/seivanov1986/gocart/internal/service/attribute"
 )
@@ -42,6 +43,8 @@ func (u *handle) Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	helpers.HttpResponse(w, http.StatusOK)
+
+	cache.Cache.AddEvent()
 }
 
 func validateAttributeUpdate(bodyBytes []byte) (*attribute2.AttributeUpdateInput, error) {
