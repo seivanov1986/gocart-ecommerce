@@ -26,7 +26,32 @@ func (i *repository) Read(ctx context.Context, categoryID int64) (*CategoryReadR
 	err := i.db.GetContext(
 		ctx,
 		&row,
-		`SELECT c.name, c.id_parent, c.content, c.id_image,
+		i.getQuery(),
+		categoryID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &row, nil
+}
+
+func (i *repository) getQuery() string {
+	query := ""
+
+	switch i.db.GetDB().DriverName() {
+	case "sqlite3":
+		query = `SELECT c.name, c.id_parent, c.content, c.id_image,
+       			c.id_meta, c.sort, c.price, c.disabled,  
+       			m.title, m.keywords, m.description,
+       			s.name as sefurl, s.template,
+       			i.path || i.name as path_image
+			FROM category c
+			LEFT JOIN meta m ON m.id = c.id_meta
+			LEFT JOIN sefurl s ON s.id_object = c.id AND s.type = 2
+			LEFT JOIN image i ON i.id = c.id_image
+			WHERE c.id = ?`
+	case "mysql":
+		query = `SELECT c.name, c.id_parent, c.content, c.id_image,
        			c.id_meta, c.sort, c.price, c.disabled,  
        			m.title, m.keywords, m.description,
        			s.name as sefurl, s.template,
@@ -35,11 +60,8 @@ func (i *repository) Read(ctx context.Context, categoryID int64) (*CategoryReadR
 			LEFT JOIN meta m ON m.id = c.id_meta
 			LEFT JOIN sefurl s ON s.id_object = c.id AND s.type = 2
 			LEFT JOIN image i ON i.id = c.id_image
-			WHERE c.id = ?`,
-		categoryID)
-	if err != nil {
-		return nil, err
+			WHERE c.id = ?`
 	}
 
-	return &row, nil
+	return query
 }

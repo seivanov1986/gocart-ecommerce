@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"io/fs"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/pressly/goose/v3"
 )
 
@@ -18,6 +19,7 @@ type DataBaseMethods interface {
 
 type DataBase interface {
 	DataBaseMethods
+	GetDB() *sqlx.DB
 	NewTransaction() (*sqlxTransaction, error)
 	RunMigrations(l goose.Logger, migrationFiles fs.FS) error
 	Close() error

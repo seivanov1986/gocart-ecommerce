@@ -9,10 +9,12 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+
 	"github.com/seivanov1986/gocart"
 	"github.com/seivanov1986/gocart/external/ajax_manager"
 	"github.com/seivanov1986/gocart/external/observer"
 	"github.com/seivanov1986/gocart/external/widget_manager"
+	"github.com/seivanov1986/sql_client"
 
 	ajaxExample "github.com/seivanov1986/gocart-ecommerce/internal/ajax/example"
 	"github.com/seivanov1986/gocart-ecommerce/internal/widget/example"
@@ -40,6 +42,8 @@ func main() {
 		log.Fatalf("db config validate error: %v", err)
 	}
 
+	transactionManager := sql_client.NewTransactionManager(sqliteDBClient)
+
 	router := mux.NewRouter()
 	ctx := context.Background()
 	ctx = observer.SetServiceBasePath(ctx, serviceBasePath)
@@ -56,6 +60,7 @@ func main() {
 		gocart.WithDatabase(sqliteDBClient),
 		gocart.WithCacheBuilder(cacheBuilder),
 		gocart.WithSessionManager(sessionManager),
+		gocart.WithTransactionManager(transactionManager),
 	)
 
 	cacheService := goLib.CacheService()

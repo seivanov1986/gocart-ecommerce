@@ -29,7 +29,32 @@ func (i *repository) Read(ctx context.Context, in PageReadInput) (*PageReadRow, 
 	err := i.db.GetContext(
 		ctx,
 		&row,
-		`SELECT p.name, p.content, p.type, 
+		i.getQuery(),
+		in.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &row, nil
+}
+
+func (i *repository) getQuery() string {
+	query := ""
+
+	switch i.db.GetDB().DriverName() {
+	case "sqlite3":
+		query = `SELECT p.name, p.content, p.type, 
+       			p.sort, p.short_content, p.id_image, p.id_meta,
+       			m.title, m.keywords, m.description,
+       			s.name as sefurl, s.template,
+       			i.path || i.name as path_image
+			FROM page p
+			LEFT JOIN meta m ON m.id = p.id_meta
+			LEFT JOIN sefurl s ON s.id_object = p.id AND s.type = 1
+			LEFT JOIN image i ON i.id = p.id_image
+			WHERE p.id = ?`
+	case "mysql":
+		query = `SELECT p.name, p.content, p.type, 
        			p.sort, p.short_content, p.id_image, p.id_meta,
        			m.title, m.keywords, m.description,
        			s.name as sefurl, s.template,
@@ -38,11 +63,8 @@ func (i *repository) Read(ctx context.Context, in PageReadInput) (*PageReadRow, 
 			LEFT JOIN meta m ON m.id = p.id_meta
 			LEFT JOIN sefurl s ON s.id_object = p.id AND s.type = 1
 			LEFT JOIN image i ON i.id = p.id_image
-			WHERE p.id = ?`,
-		in.ID)
-	if err != nil {
-		return nil, err
+			WHERE p.id = ?`
 	}
 
-	return &row, nil
+	return query
 }

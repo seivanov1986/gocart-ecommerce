@@ -35,14 +35,18 @@ type PageCreateError struct {
 func (u *handle) Create(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, err := io.ReadAll(io.LimitReader(r.Body, 2048))
 	if err != nil {
-		helpers.HttpResponse(w, http.StatusInternalServerError)
+		helpers.HttpResponse(w, http.StatusInternalServerError, PageCreateError{
+			Error: err.Error(),
+		})
 		return
 	}
 
 	CreateListInput, err := validatePageCreate(bodyBytes)
 	if err != nil {
 		fmt.Println(err)
-		helpers.HttpResponse(w, http.StatusBadRequest)
+		helpers.HttpResponse(w, http.StatusBadRequest, PageCreateError{
+			Error: err.Error(),
+		})
 		return
 	}
 

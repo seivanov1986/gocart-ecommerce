@@ -18,6 +18,10 @@ const (
 	migrationsDirectory = "."
 )
 
+func (d *DataBaseImpl) GetDB() *sqlx.DB {
+	return d.DB
+}
+
 func (d *DataBaseImpl) NewTransaction() (*sqlxTransaction, error) {
 	tx, _ := d.DB.Beginx()
 	return &sqlxTransaction{tx}, nil

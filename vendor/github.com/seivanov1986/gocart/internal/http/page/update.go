@@ -48,6 +48,7 @@ func (u *handle) Update(w http.ResponseWriter, r *http.Request) {
 
 	err = u.service.Update(r.Context(), *CreateListInput)
 	if err != nil {
+		fmt.Println(err)
 		helpers.HttpResponse(w, http.StatusInternalServerError, PageCreateError{
 			Error: err.Error(),
 		})

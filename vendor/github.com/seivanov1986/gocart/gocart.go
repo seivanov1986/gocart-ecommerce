@@ -3,8 +3,9 @@ package gocart
 import (
 	"github.com/seivanov1986/sql_client"
 
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 
 	"github.com/seivanov1986/gocart/external/cache_builder"
 	"github.com/seivanov1986/gocart/external/cache_service"
@@ -106,11 +107,12 @@ func New(opts ...OptionFunc) *goCart {
 	}
 
 	return &goCart{
-		database:       options.database,
-		sessionManager: options.sessionManager,
-		cacheBuilder:   options.cacheBuilder,
-		widgetManager:  options.widgetManager,
-		buildInWidgets: options.buildInWidgets,
+		database:           options.database,
+		sessionManager:     options.sessionManager,
+		cacheBuilder:       options.cacheBuilder,
+		widgetManager:      options.widgetManager,
+		buildInWidgets:     options.buildInWidgets,
+		transactionManager: options.transactionManager,
 	}
 }
 

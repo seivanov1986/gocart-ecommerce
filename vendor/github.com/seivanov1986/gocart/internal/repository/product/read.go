@@ -29,7 +29,32 @@ func (i *repository) Read(ctx context.Context, in ProductReadInput) (*ProductRea
 	err := i.db.GetContext(
 		ctx,
 		&row,
-		`SELECT p.name, p.content, p.id_meta, 
+		i.getQuery(),
+		in.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &row, nil
+}
+
+func (i *repository) getQuery() string {
+	query := ""
+
+	switch i.db.GetDB().DriverName() {
+	case "sqlite3":
+		query = `SELECT p.name, p.content, p.id_meta, 
+       			p.sort, p.price, p.id_image, p.disabled,  
+       			m.title, m.keywords, m.description,
+       			s.name as sefurl, s.template,
+       			i.path || i.name as path_image
+			FROM product p
+			LEFT JOIN meta m ON m.id = p.id_meta
+			LEFT JOIN sefurl s ON s.id_object = p.id AND s.type = 3
+			LEFT JOIN image i ON i.id = p.id_image
+			WHERE p.id = ?`
+	case "mysql":
+		query = `SELECT p.name, p.content, p.id_meta, 
        			p.sort, p.price, p.id_image, p.disabled,  
        			m.title, m.keywords, m.description,
        			s.name as sefurl, s.template,
@@ -38,11 +63,8 @@ func (i *repository) Read(ctx context.Context, in ProductReadInput) (*ProductRea
 			LEFT JOIN meta m ON m.id = p.id_meta
 			LEFT JOIN sefurl s ON s.id_object = p.id AND s.type = 3
 			LEFT JOIN image i ON i.id = p.id_image
-			WHERE p.id = ?`,
-		in.ID)
-	if err != nil {
-		return nil, err
+			WHERE p.id = ?`
 	}
 
-	return &row, nil
+	return query
 }
