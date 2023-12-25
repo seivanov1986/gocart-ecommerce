@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/mux"
 
 	"github.com/seivanov1986/gocart"
+	header_widget "github.com/seivanov1986/gocart-ecommerce/internal/widget/header"
 	"github.com/seivanov1986/gocart/external/ajax_manager"
 	"github.com/seivanov1986/gocart/external/cache"
 	"github.com/seivanov1986/gocart/external/observer"
@@ -52,6 +53,7 @@ func main() {
 	ajaxManager := ajax_manager.New()
 	ajaxManager.RegisterPath("outexample", ajaxExample.New())
 	widgetManger.Register("exampleout", example.New())
+	widgetManger.Register("header", header_widget.New())
 
 	sessionManager := session_manager.New()
 

@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	htmlTemplate "html/template"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"text/template"
@@ -89,9 +91,24 @@ func (b *builder) makeObject(ctx context.Context, row sefurl.SefUrlListLimitIdRo
 func (b *builder) renderPage(ctx context.Context, row sefurl.SefUrlListLimitIdRow) ([]byte, error) {
 	serviceBasePath := observer.GetServiceBasePath(ctx)
 
-	templateFiles := []string{
-		serviceBasePath + "/schemes/templates/layouts/common.html",
+	layoutName := "page"
+	if row.Template != nil && *row.Template != "" {
+		layoutName = *row.Template
 	}
+
+	layoutFile := []string{
+		serviceBasePath + "/schemes/templates/layouts/common.html",
+		serviceBasePath + "/schemes/templates/layouts/" + layoutName + ".html",
+	}
+
+	templateCommonFiles, _ := filepath.Glob(
+		serviceBasePath + "/schemes/templates/blocks/common/*.html",
+	)
+	blockFiles, _ := filepath.Glob(
+		serviceBasePath + "/schemes/templates/blocks/" + layoutName + "/*.html",
+	)
+	templateFiles := append(layoutFile, templateCommonFiles...)
+	templateFiles = append(templateFiles, blockFiles...)
 
 	tmpl, err := template.New("common").ParseFiles(templateFiles...)
 	if err != nil {
@@ -103,12 +120,20 @@ func (b *builder) renderPage(ctx context.Context, row sefurl.SefUrlListLimitIdRo
 	assetManager := asset_manager.New()
 	b.widgetManager.SetAssets(assetManager)
 
-	err = tmpl.ExecuteTemplate(buf, "common", nil)
+	// TODO get ITEM
+
+	err = tmpl.ExecuteTemplate(buf, "common", map[string]interface{}{
+		"name":    "",
+		"content": htmlTemplate.HTML(""),
+		"meta":    "",
+	})
 	if err != nil {
 		return nil, err
 	}
 
 	content := buf.String()
+
+	b.widgetManager.Render(ctx, "header")
 
 	reg, _ := regexp.Compile(`{#outertemplate%([A-Za-z_0-9]+)#}`)
 	for _, match := range reg.FindAllStringSubmatch(content, -1) {
@@ -122,6 +147,10 @@ func (b *builder) renderPage(ctx context.Context, row sefurl.SefUrlListLimitIdRo
 			content = strings.Replace(content, match[0], *res, -1)
 		}
 	}
+
+	content = strings.Replace(content, "{#systemtemplate%bottomjs#}", assetManager.GetJsTemplate(), -1)
+	content = strings.Replace(content, "{#systemtemplate%topcss#}", assetManager.GetCssTemplate(), -1)
+	content = strings.Replace(content, "{#systemtemplate%toppreload#}", assetManager.GetPreloadTemplate(), -1)
 
 	return []byte(content), nil
 }

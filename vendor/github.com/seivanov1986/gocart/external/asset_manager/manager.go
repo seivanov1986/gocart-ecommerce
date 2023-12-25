@@ -139,7 +139,7 @@ func (a assetManager) GetJsList() []client.ResultList {
 		modifiedtime := time.Now()
 
 		if strings.HasPrefix(v.Key, "/static") {
-			file, err := os.Stat(serviceBasePath + "/service/schemes/public" + v.Key)
+			file, err := os.Stat(serviceBasePath + "/schemes/public" + v.Key)
 			if err != nil {
 				continue
 			}
@@ -182,7 +182,7 @@ func (a assetManager) GetCssList() []client.ResultList {
 		modifiedtime := time.Now()
 
 		if strings.HasPrefix(v.Key, "/static") {
-			file, err := os.Stat(serviceBasePath + "/service/schemes/public" + v.Key)
+			file, err := os.Stat(serviceBasePath + "/schemes/public" + v.Key)
 			if err != nil {
 				continue
 			}
@@ -226,7 +226,7 @@ func (a assetManager) GetPreloadList() []client.ResultList {
 		modifiedtime := time.Now()
 
 		if strings.HasPrefix(v.Key, "/static") {
-			file, err := os.Stat(serviceBasePath + "/service/schemes/public" + v.Key)
+			file, err := os.Stat(serviceBasePath + "/schemes/public" + v.Key)
 			if err != nil {
 				continue
 			}

@@ -8,7 +8,7 @@ import (
 )
 
 type widgetManager struct {
-	widgets   map[string]client.Widget
+	widgets      map[string]client.Widget
 	assetManager client.AssetManager
 }
 
@@ -30,6 +30,10 @@ func (w *widgetManager) Render(ctx context.Context, name string) (*string, error
 	widget, ok := w.widgets[name]
 	if !ok {
 		return nil, fmt.Errorf("widget not found")
+	}
+
+	if w.assetManager != nil {
+		widget.SetAssets(w.assetManager)
 	}
 
 	return widget.Execute()
