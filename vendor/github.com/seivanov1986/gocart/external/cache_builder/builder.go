@@ -44,7 +44,6 @@ func (b *builder) Handler(ctx context.Context, pages []client.UrlListRow) error 
 	var offsetID int64 = 0
 
 	for {
-		fmt.Println(offsetID)
 		rows, err := b.hub.SefUrl().ListLimitId(ctx, offsetID)
 		if err != nil {
 			return err

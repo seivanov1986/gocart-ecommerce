@@ -32,6 +32,7 @@ func (u *handle) Delete(w http.ResponseWriter, r *http.Request) {
 
 	err = u.service.Delete(r.Context(), CreateListInput)
 	if err != nil {
+		fmt.Println(err)
 		helpers.HttpResponse(w, http.StatusInternalServerError, PageDeleteError{
 			Error: err.Error(),
 		})

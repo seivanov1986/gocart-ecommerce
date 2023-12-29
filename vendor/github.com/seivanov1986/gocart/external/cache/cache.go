@@ -1,7 +1,6 @@
 package cache
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -45,8 +44,6 @@ func (c *cache) Execute() {
 		c.mutex.Lock()
 		c.progress = false
 		c.mutex.Unlock()
-		fmt.Println("task execute")
 		c.process()
-		fmt.Println("task stop")
 	}
 }

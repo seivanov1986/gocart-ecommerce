@@ -14,16 +14,16 @@ type ProductListOut struct {
 }
 
 type ProductListRow struct {
-	Id          int64   `db:"id"`
-	Name        string  `db:"name"`
-	Content     *string `db:"content"`
-	IdMeta      *int64  `db:"id_meta"`
-	Sort        int64   `db:"sort"`
-	Price       *string `db:"price"`
-	IdImage     *int64  `db:"id_image"`
-	Disabled    int64   `db:"disabled"`
-	CreatedAt   int64   `db:"created_at"`
-	UpdatedAt   int64   `db:"updated_at"`
+	Id        int64   `db:"id" json:"id"`
+	Name      string  `db:"name" json:"name"`
+	Content   *string `db:"content" json:"content"`
+	IdMeta    *int64  `db:"id_meta" json:"id_meta"`
+	Sort      int64   `db:"sort" json:"sort"`
+	Price     *string `db:"price" json:"price"`
+	IdImage   *int64  `db:"id_image" json:"id_image"`
+	Disabled  int64   `db:"disabled" json:"disabled"`
+	CreatedAt int64   `db:"created_at" json:"created_at"`
+	UpdatedAt int64   `db:"updated_at" json:"updated_at"`
 }
 
 func (i *repository) List(ctx context.Context, in ProductListInput) (*ProductListOut, error) {

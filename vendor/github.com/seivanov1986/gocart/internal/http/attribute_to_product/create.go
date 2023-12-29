@@ -11,6 +11,9 @@ import (
 )
 
 type AttributeToProductCreateRpcIn struct {
+	ProductID   int64  `json:"id_product"`
+	AttributeID int64  `json:"id_attribute"`
+	Value       string `json:"value"`
 }
 
 type AttributeToProductCreateRpcOut struct {
@@ -50,6 +53,10 @@ func validateAttributeToProductCreate(bodyBytes []byte) (*attribute_to_product2.
 	if err := json.Unmarshal(bodyBytes, &userCreateRpcIn); err != nil {
 		return nil, fmt.Errorf(err.Error())
 	}
+
+	out.ProductID = userCreateRpcIn.ProductID
+	out.AttributeID = userCreateRpcIn.AttributeID
+	out.Value = userCreateRpcIn.Value
 
 	return &out, nil
 }

@@ -15,8 +15,8 @@ type ProductToCategoryListOut struct {
 }
 
 type ProductToCategoryListRow struct {
-	CategoryID   int64  `db:"id_category"`
-	NameCategory string `db:"name_category"`
+	CategoryID   int64  `db:"id_category" json:"id_category"`
+	NameCategory string `db:"name_category" json:"name_category"`
 }
 
 func (c *repository) List(ctx context.Context, in ProductToCategoryListInput) (*ProductToCategoryListOut, error) {

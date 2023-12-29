@@ -14,11 +14,6 @@ func (u *service) Delete(ctx context.Context, IDs []int64) error {
 				return err
 			}
 
-			err = u.hub.ImageToCategory().DeleteImagesInCategory(ctx, idCategory)
-			if err != nil {
-				return err
-			}
-
 			err = u.hub.SefUrl().DeleteByObjectType(ctx, idCategory, 2)
 			if err != nil {
 				return err
