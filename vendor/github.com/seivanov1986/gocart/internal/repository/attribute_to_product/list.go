@@ -19,8 +19,6 @@ type AttributeToProductListRow struct {
 
 func (c *repository) List(ctx context.Context, productID int64, offset int64) (*AttributeToProductListOut, error) {
 	pageRows := []AttributeToProductListRow{}
-	var attributeToProductOut *AttributeToProductListOut
-
 	err := c.db.SelectContext(ctx,
 		&pageRows,
 		`SELECT atp.id, atp.id_product, atp.id_attribute, a.name, atp.value 
@@ -46,6 +44,4 @@ func (c *repository) List(ctx context.Context, productID int64, offset int64) (*
 		List:  pageRows,
 		Total: total,
 	}, nil
-
-	return attributeToProductOut, nil
 }

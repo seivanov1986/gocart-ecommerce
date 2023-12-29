@@ -9,5 +9,5 @@ import (
 type Service interface {
 	Create(ctx context.Context, input AttributeToProductCreateInput) error
 	Delete(ctx context.Context, ProductID, AttributeID int64) error
-	List(ctx context.Context, productID int64, offset int64) (*attribute_to_product.AttributeToProductListOut, error)
+	List(ctx context.Context, in AttributeToProductListIn) (*attribute_to_product.AttributeToProductListOut, error)
 }

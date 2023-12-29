@@ -291,18 +291,44 @@ func (g *goCart) InitAdminHandles(router *mux.Router) {
 
 	productRouter := router.PathPrefix("/product").Subrouter()
 	g.InitProductHandles(productRouter)
+	productToCategoryRouter := productRouter.PathPrefix("/to_category").Subrouter()
+	g.InitProductToCategoryHandles(productToCategoryRouter)
 
 	userRouter := router.PathPrefix("/user").Subrouter()
 	g.InitUserHandles(userRouter)
 
 	attributeRouter := router.PathPrefix("/attribute").Subrouter()
 	g.InitAttributeHandles(attributeRouter)
+	attributeToProductRouter := attributeRouter.PathPrefix("/to_product").Subrouter()
+	g.InitAttributeToProductHandles(attributeToProductRouter)
 
 	sefurlRouter := router.PathPrefix("/sefurl").Subrouter()
 	g.InitSefurlHandles(sefurlRouter)
 
 	router.HandleFunc("/ping", g.AuthHandler().Ping).
 		Methods(http.MethodPost, http.MethodOptions)
+
+	// TODO image, image_to_category, image_to_product
+}
+
+func (g *goCart) InitProductToCategoryHandles(router *mux.Router) {
+	hub := repository.New(g.database, g.transactionManager)
+	service := productToCategoryService.New(hub)
+	handle := product_to_category.New(service)
+
+	router.HandleFunc("/create", handle.Create).Methods(http.MethodPost, http.MethodOptions)
+	router.HandleFunc("/delete", handle.Delete).Methods(http.MethodPost, http.MethodOptions)
+	router.HandleFunc("/list", handle.List).Methods(http.MethodPost, http.MethodOptions)
+}
+
+func (g *goCart) InitAttributeToProductHandles(router *mux.Router) {
+	hub := repository.New(g.database, g.transactionManager)
+	service := attributeToProductService.New(hub)
+	handle := attribute_to_product.New(service)
+
+	router.HandleFunc("/create", handle.Create).Methods(http.MethodPost, http.MethodOptions)
+	router.HandleFunc("/delete", handle.Delete).Methods(http.MethodPost, http.MethodOptions)
+	router.HandleFunc("/list", handle.List).Methods(http.MethodPost, http.MethodOptions)
 }
 
 func (g *goCart) InitSefurlHandles(router *mux.Router) {

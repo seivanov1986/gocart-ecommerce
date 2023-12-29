@@ -5,7 +5,8 @@ import (
 )
 
 type ProductToCategoryListInput struct {
-	Page int64
+	ProductID int64
+	Page      int64
 }
 
 type ProductToCategoryListOut struct {
@@ -14,6 +15,8 @@ type ProductToCategoryListOut struct {
 }
 
 type ProductToCategoryListRow struct {
+	CategoryID   int64  `db:"id_category"`
+	NameCategory string `db:"name_category"`
 }
 
 func (c *repository) List(ctx context.Context, in ProductToCategoryListInput) (*ProductToCategoryListOut, error) {
@@ -21,12 +24,13 @@ func (c *repository) List(ctx context.Context, in ProductToCategoryListInput) (*
 	err := c.db.SelectContext(
 		ctx,
 		&imageRows,
-		`SELECT A.id_product, A.id_category, B.name AS name_category 
+		`SELECT A.id_category, B.name AS name_category 
 			FROM product_to_category A
 			LEFT JOIN category B 
 			ON A.id_category = B.id
+			WHERE A.id_product = ?
           LIMIT ?, ?`,
-		in.Page*limit, limit)
+		in.ProductID, in.Page*limit, limit)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +39,11 @@ func (c *repository) List(ctx context.Context, in ProductToCategoryListInput) (*
 	err = c.db.GetContext(
 		ctx,
 		&total,
-		`SELECT COUNT(*) FROM product_to_category`)
+		`SELECT COUNT(*)
+			FROM product_to_category A
+			LEFT JOIN category B 
+			ON A.id_category = B.id
+			WHERE A.id_product = ?`, in.ProductID)
 	if err != nil {
 		return nil, err
 	}
