@@ -12,4 +12,6 @@ type Service interface {
 	Update(ctx context.Context, in CategoryUpdateInput) error
 	Delete(ctx context.Context, IDs []int64) error
 	List(ctx context.Context, in CategoryListIn) (*category.CategoryListOut, error)
+
+	SelectList(ctx context.Context, in CategorySelectListIn) ([]category.CategorySelectListRow, error)
 }

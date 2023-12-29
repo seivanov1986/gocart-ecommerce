@@ -10,4 +10,6 @@ type Handle interface {
 	Update(w http.ResponseWriter, r *http.Request)
 	Delete(w http.ResponseWriter, r *http.Request)
 	List(w http.ResponseWriter, r *http.Request)
+
+	SelectList(w http.ResponseWriter, r *http.Request)
 }

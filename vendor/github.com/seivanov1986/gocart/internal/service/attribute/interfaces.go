@@ -12,4 +12,6 @@ type Service interface {
 	Update(ctx context.Context, in AttributeUpdateInput) error
 	Delete(ctx context.Context, IDs []int64) error
 	List(ctx context.Context, in AttributeListIn) (*attribute.AttributeListOut, error)
+
+	SelectList(ctx context.Context, in AttributeSelectListIn) ([]attribute.AttributeSelectListRow, error)
 }

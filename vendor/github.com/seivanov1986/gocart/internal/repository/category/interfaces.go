@@ -10,4 +10,6 @@ type Repository interface {
 	Update(ctx context.Context, in CategoryUpdateInput) error
 	Delete(ctx context.Context, idCategory int64) error
 	List(ctx context.Context, in CategoryListInput) (*CategoryListOut, error)
+
+	SelectList(ctx context.Context, in CategorySelectListInput) ([]CategorySelectListRow, error)
 }

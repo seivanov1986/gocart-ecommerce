@@ -336,6 +336,8 @@ func (g *goCart) InitCategoryHandles(router *mux.Router) {
 	router.HandleFunc("/update", categoryHandle.Update).Methods(http.MethodPost, http.MethodOptions)
 	router.HandleFunc("/delete", categoryHandle.Delete).Methods(http.MethodPost, http.MethodOptions)
 	router.HandleFunc("/list", categoryHandle.List).Methods(http.MethodPost, http.MethodOptions)
+
+	router.HandleFunc("/select_list", categoryHandle.SelectList).Methods(http.MethodPost, http.MethodOptions)
 }
 
 func (g *goCart) InitProductHandles(router *mux.Router) {
@@ -372,6 +374,8 @@ func (g *goCart) InitAttributeHandles(router *mux.Router) {
 	router.HandleFunc("/update", attributeHandle.Update).Methods(http.MethodPost, http.MethodOptions)
 	router.HandleFunc("/delete", attributeHandle.Delete).Methods(http.MethodPost, http.MethodOptions)
 	router.HandleFunc("/list", attributeHandle.List).Methods(http.MethodPost, http.MethodOptions)
+
+	router.HandleFunc("/select_list", attributeHandle.SelectList).Methods(http.MethodPost, http.MethodOptions)
 }
 
 func (g *goCart) InitAjaxManager(manager client.AjaxManager) {

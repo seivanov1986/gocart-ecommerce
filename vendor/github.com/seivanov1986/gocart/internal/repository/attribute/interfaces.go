@@ -11,4 +11,6 @@ type Repository interface {
 	Delete(ctx context.Context, ID int64) error
 	DeleteIn(ctx context.Context, IDs []int64) error
 	List(ctx context.Context, in AttributeListInput) (*AttributeListOut, error)
+
+	SelectList(ctx context.Context, in AttributeSelectListInput) ([]AttributeSelectListRow, error)
 }
