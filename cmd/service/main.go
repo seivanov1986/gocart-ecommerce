@@ -12,6 +12,7 @@ import (
 
 	"github.com/seivanov1986/gocart"
 	header_widget "github.com/seivanov1986/gocart-ecommerce/internal/widget/header"
+	"github.com/seivanov1986/gocart-ecommerce/pkg/upload_handler"
 	"github.com/seivanov1986/gocart/external/ajax_manager"
 	"github.com/seivanov1986/gocart/external/cache"
 	"github.com/seivanov1986/gocart/external/observer"
@@ -88,6 +89,10 @@ func main() {
 	adminRouter := router.PathPrefix("/admin").Subrouter()
 	adminRouter.Use(authMiddleware.Handle)
 	goLib.InitAdminHandles(adminRouter)
+
+	uploadHandler := upload_handler.New()
+	adminRouter.HandleFunc("/upload", uploadHandler.Upload).
+		Methods(http.MethodPost, http.MethodOptions)
 
 	router.HandleFunc("/ajax", ajaxManager.Handler).
 		Methods(http.MethodPost, http.MethodOptions)
