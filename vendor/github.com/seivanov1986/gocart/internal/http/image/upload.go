@@ -1,4 +1,4 @@
-package upload_handler
+package image
 
 import (
 	"errors"
@@ -7,29 +7,20 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	b64 "encoding/base64"
 
 	"github.com/seivanov1986/gocart/helpers"
+	"github.com/seivanov1986/gocart/internal/service/image"
 )
-
-type handler struct {
-}
-
-type Handler interface {
-	Upload(w http.ResponseWriter, r *http.Request)
-}
-
-func New() *handler {
-	return &handler{}
-}
 
 type UploadOut struct {
 	Success bool  `json:"success"`
 	Done    *bool `json:"done"`
 }
 
-func (a *handler) Upload(w http.ResponseWriter, r *http.Request) {
+func (a *handle) Upload(w http.ResponseWriter, r *http.Request) {
 	uid := r.Header.Get("X-Uid")
 	totalStr := r.Header.Get("X-Total")
 	total, _ := strconv.ParseInt(totalStr, 10, 64)
@@ -42,6 +33,10 @@ func (a *handler) Upload(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(uid, total, offset, name)
 
 	filePath := "/tmp/" + uid
+
+	if offset == 0 {
+		// TODO start go rutine monitor for delete phantome
+	}
 
 	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) && offset > 0 {
 		helpers.HttpResponse(w, http.StatusInternalServerError)
@@ -69,9 +64,20 @@ func (a *handler) Upload(w http.ResponseWriter, r *http.Request) {
 		var done = true
 		uploadOut.Done = &done
 
+		err := a.service.Create(r.Context(), image.ImageCreateIn{
+			Name:      name,
+			ParentID:  0,
+			Path:      "",
+			FType:     1,
+			CreatedAT: time.Now().Unix(),
+		})
+		if err != nil {
+			helpers.HttpResponse(w, http.StatusInternalServerError)
+			return
+		}
+
 		/*
-			TODO:: service -> save to DB
-			service -> make thumbs
+			TODO: service -> make thumbs
 		*/
 	}
 

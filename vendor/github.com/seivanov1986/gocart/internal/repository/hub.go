@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/seivanov1986/gocart/internal/repository/image"
 	"github.com/seivanov1986/sql_client"
 
 	"github.com/seivanov1986/gocart/internal/repository/attribute"
@@ -30,6 +31,7 @@ type Hub interface {
 	ProductToCategory() product_to_category.Repository
 	SefUrl() sefurl.Repository
 	User() user.Repository
+	Image() image.Repository
 }
 
 type hub struct {
@@ -45,6 +47,7 @@ type hub struct {
 	productToCategory  product_to_category.Repository
 	sefUrl             sefurl.Repository
 	user               user.Repository
+	image              image.Repository
 }
 
 func New(db sql_client.DataBase, trx sql_client.TransactionManager) *hub {
@@ -56,11 +59,12 @@ func New(db sql_client.DataBase, trx sql_client.TransactionManager) *hub {
 		imageToCategory:    image_to_category.New(db),
 		imageToProduct:     image_to_product.New(db),
 		meta:               meta.New(db, trx),
-		page: 				page.New(db, trx),
+		page:               page.New(db, trx),
 		product:            product.New(db, trx),
 		productToCategory:  product_to_category.New(db),
 		sefUrl:             sefurl.New(db, trx),
 		user:               user.New(db),
+		image:              image.New(db, trx),
 	}
 }
 
@@ -110,4 +114,8 @@ func (h *hub) ProductToCategory() product_to_category.Repository {
 
 func (h *hub) User() user.Repository {
 	return h.user
+}
+
+func (h *hub) Image() image.Repository {
+	return h.image
 }

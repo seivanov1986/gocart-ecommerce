@@ -1,6 +1,7 @@
 package gocart
 
 import (
+	"github.com/seivanov1986/gocart/internal/service/image"
 	"github.com/seivanov1986/sql_client"
 
 	"net/http"
@@ -15,6 +16,7 @@ import (
 	"github.com/seivanov1986/gocart/internal/http/category"
 	commonHandle "github.com/seivanov1986/gocart/internal/http/common"
 	"github.com/seivanov1986/gocart/internal/http/file"
+	imageHandle "github.com/seivanov1986/gocart/internal/http/image"
 	"github.com/seivanov1986/gocart/internal/http/image_to_category"
 	"github.com/seivanov1986/gocart/internal/http/image_to_product"
 	"github.com/seivanov1986/gocart/internal/http/page"
@@ -308,7 +310,19 @@ func (g *goCart) InitAdminHandles(router *mux.Router) {
 	router.HandleFunc("/ping", g.AuthHandler().Ping).
 		Methods(http.MethodPost, http.MethodOptions)
 
+	imageRouter := router.PathPrefix("/image").Subrouter()
+	g.InitImageHandles(imageRouter)
+
 	// TODO image, image_to_category, image_to_product
+}
+
+func (g *goCart) InitImageHandles(router *mux.Router) {
+	hub := repository.New(g.database, g.transactionManager)
+	service := image.New(hub, g.transactionManager)
+	handle := imageHandle.New(service)
+
+	router.HandleFunc("/upload", handle.Upload).Methods(http.MethodPost, http.MethodOptions)
+	router.HandleFunc("/list", handle.List).Methods(http.MethodPost, http.MethodOptions)
 }
 
 func (g *goCart) InitProductToCategoryHandles(router *mux.Router) {
