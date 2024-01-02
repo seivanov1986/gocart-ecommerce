@@ -21,6 +21,8 @@ type UploadOut struct {
 }
 
 func (a *handle) Upload(w http.ResponseWriter, r *http.Request) {
+	parentIDStr := r.Header.Get("X-Parent-ID")
+	parentID, _ := strconv.ParseInt(parentIDStr, 10, 64)
 	uid := r.Header.Get("X-Uid")
 	totalStr := r.Header.Get("X-Total")
 	total, _ := strconv.ParseInt(totalStr, 10, 64)
@@ -66,8 +68,7 @@ func (a *handle) Upload(w http.ResponseWriter, r *http.Request) {
 
 		err := a.service.Create(r.Context(), image.ImageCreateIn{
 			Name:      name,
-			ParentID:  0,
-			Path:      "",
+			ParentID:  parentID,
 			FType:     1,
 			CreatedAT: time.Now().Unix(),
 		})
@@ -75,10 +76,6 @@ func (a *handle) Upload(w http.ResponseWriter, r *http.Request) {
 			helpers.HttpResponse(w, http.StatusInternalServerError)
 			return
 		}
-
-		/*
-			TODO: service -> make thumbs
-		*/
 	}
 
 	helpers.HttpResponse(w, http.StatusOK, uploadOut)

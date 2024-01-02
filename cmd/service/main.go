@@ -95,6 +95,11 @@ func main() {
 	router.PathPrefix("/admin").HandlerFunc(fileHandle.AdminStatic).
 		Methods(http.MethodGet)
 
+	router.PathPrefix("/static").HandlerFunc(fileHandle.Static).
+		Methods(http.MethodGet)
+	router.PathPrefix("/dynamic").HandlerFunc(fileHandle.Dynamic).
+		Methods(http.MethodGet)
+
 	srv := &http.Server{
 		Handler:      router,
 		Addr:         ":8000",
