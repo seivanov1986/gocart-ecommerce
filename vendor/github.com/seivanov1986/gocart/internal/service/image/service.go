@@ -10,6 +10,11 @@ const (
 	categoryType = 2
 )
 
+type Size struct {
+	Height int
+	Width  int
+}
+
 type service struct {
 	hub       repository.Hub
 	TrManager sql_client.TransactionManager

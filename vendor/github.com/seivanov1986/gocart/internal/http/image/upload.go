@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	b64 "encoding/base64"
@@ -34,10 +35,23 @@ func (a *handle) Upload(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(uid, total, offset, name)
 
-	filePath := "/tmp/" + uid
+	t := time.Now().Format(time.DateOnly)
+	d := strings.Split(t, "-")
+	fmt.Println(d)
+
+	path := "/tmp/" + d[0] + "/" + d[1] + "/" + d[2] + "/"
+	filePath := path + uid
+
+	fmt.Println(path, filePath)
 
 	if offset == 0 {
-		// TODO start go rutine monitor for delete phantome
+		// TODO start go rutine monitor for delete phantom
+	}
+
+	err := os.MkdirAll(path, 0777)
+	if err != nil {
+		helpers.HttpResponse(w, http.StatusInternalServerError)
+		return
 	}
 
 	if _, err := os.Stat(filePath); errors.Is(err, os.ErrNotExist) && offset > 0 {
@@ -67,10 +81,12 @@ func (a *handle) Upload(w http.ResponseWriter, r *http.Request) {
 		uploadOut.Done = &done
 
 		err := a.service.Create(r.Context(), image.ImageCreateIn{
-			Name:      name,
-			ParentID:  parentID,
-			FType:     1,
-			CreatedAT: time.Now().Unix(),
+			Name:       name,
+			ParentID:   parentID,
+			FType:      0,
+			CreatedAT:  time.Now().Unix(),
+			UID:        uid,
+			OriginPath: path,
 		})
 		if err != nil {
 			helpers.HttpResponse(w, http.StatusInternalServerError)

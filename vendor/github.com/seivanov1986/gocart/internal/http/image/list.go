@@ -12,8 +12,8 @@ import (
 )
 
 type ImageListRpcIn struct {
-	Page     int64
-	ParentID int64
+	Page     int64 `json:"page"`
+	ParentID int64 `json:"parent_id"`
 }
 
 type ImageListRpcOut struct {

@@ -313,7 +313,7 @@ func (g *goCart) InitAdminHandles(router *mux.Router) {
 	imageRouter := router.PathPrefix("/image").Subrouter()
 	g.InitImageHandles(imageRouter)
 
-	// TODO image, image_to_category, image_to_product
+	// image_to_category, image_to_product
 }
 
 func (g *goCart) InitImageHandles(router *mux.Router) {
@@ -323,6 +323,7 @@ func (g *goCart) InitImageHandles(router *mux.Router) {
 
 	router.HandleFunc("/upload", handle.Upload).Methods(http.MethodPost, http.MethodOptions)
 	router.HandleFunc("/list", handle.List).Methods(http.MethodPost, http.MethodOptions)
+	router.HandleFunc("/create_folder", handle.CreateFolder).Methods(http.MethodPost, http.MethodOptions)
 }
 
 func (g *goCart) InitProductToCategoryHandles(router *mux.Router) {

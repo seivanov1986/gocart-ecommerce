@@ -8,6 +8,7 @@ import (
 
 type Service interface {
 	Create(ctx context.Context, in ImageCreateIn) error
+	CreateFolder(ctx context.Context, in ImageCreateFolderIn) error
 	Delete(ctx context.Context, ID int64) error
 	List(ctx context.Context, in CategoryListIn) (*image.ImageListOut, error)
 }
