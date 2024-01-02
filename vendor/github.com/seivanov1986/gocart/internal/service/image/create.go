@@ -23,12 +23,19 @@ type ImageCreateIn struct {
 }
 
 func (u *service) Create(ctx context.Context, in ImageCreateIn) error {
-	// GET path from parent
+	path := "/"
+	if in.ParentID > 0 {
+		row, err := u.hub.Image().Read(ctx, in.ParentID)
+		if err != nil {
+			return err
+		}
+		path = row.Path
+	}
 
 	err := u.hub.Image().Create(ctx, image.ImageCreateInput{
 		Name:       in.Name,
 		ParentID:   in.ParentID,
-		Path:       "/",
+		Path:       path,
 		FType:      in.FType,
 		CreatedAT:  in.CreatedAT,
 		OriginPath: in.OriginPath,
@@ -38,11 +45,11 @@ func (u *service) Create(ctx context.Context, in ImageCreateIn) error {
 		return err
 	}
 
-	return u.makeThumb(in.OriginPath, in.UID, in.Name, Size{180, 180})
+	return u.makeThumb(in.OriginPath, in.UID, in.Name, path, Size{180, 180})
 }
 
-func (u *service) makeThumb(path, uid, name string, size Size) error {
-	filePath := path + uid
+func (u *service) makeThumb(originPath, uid, name, path string, size Size) error {
+	filePath := originPath + uid
 
 	img, err := imaging.Open(filePath, imaging.AutoOrientation(true))
 	if err != nil {
@@ -60,5 +67,5 @@ func (u *service) makeThumb(path, uid, name string, size Size) error {
 	fileNameExt := filepath.Ext(name)
 	fileName := strings.TrimSuffix(name, fileNameExt)
 
-	return helpers.SaveFile("/tmp/project/images/"+fileName+"_180x180.jpeg", buf)
+	return helpers.SaveFile("/tmp/project/images"+path+fileName+"_180x180.jpeg", buf)
 }

@@ -2,6 +2,7 @@ package image
 
 import (
 	"context"
+	"os"
 
 	"github.com/seivanov1986/gocart/internal/repository/image"
 )
@@ -12,10 +13,25 @@ type ImageCreateFolderIn struct {
 }
 
 func (u *service) CreateFolder(ctx context.Context, in ImageCreateFolderIn) error {
+	path := "/" + in.Name + "/"
+	if in.ParentID > 0 {
+		row, err := u.hub.Image().Read(ctx, in.ParentID)
+		if err != nil {
+			return err
+		}
+
+		path = row.Path + in.Name + "/"
+	}
+
+	err := os.MkdirAll("/tmp/project/images"+path, 0777)
+	if err != nil {
+		return err
+	}
+
 	return u.hub.Image().Create(ctx, image.ImageCreateInput{
 		Name:     in.Name,
 		ParentID: in.ParentID,
-		Path:     "/",
+		Path:     path,
 		FType:    1,
 	})
 }
