@@ -7,13 +7,13 @@ import (
 	"net/http"
 
 	"github.com/seivanov1986/gocart/helpers"
-	"github.com/seivanov1986/gocart/internal/service/category"
 	categoryRepository "github.com/seivanov1986/gocart/internal/repository/category"
+	"github.com/seivanov1986/gocart/internal/service/category"
 )
 
 type CategoryListRpcIn struct {
-	Page     int64
-	ParentID int64
+	Page     int64 `json:"page"`
+	ParentID int64 `json:"id_parent"`
 }
 
 type CategoryListRpcOut struct {
