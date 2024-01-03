@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"errors"
 	"io"
 	"os"
 	"path/filepath"
@@ -31,4 +32,13 @@ func SaveFile(path string, bodyReader io.Reader) (err error) {
 	}
 
 	return nil
+}
+
+func IsExists(filePath string) bool {
+	_, err := os.Stat(filePath)
+	if errors.Is(err, os.ErrNotExist) {
+		return false
+	}
+
+	return true
 }

@@ -2,8 +2,10 @@ package image
 
 import (
 	"context"
+	"fmt"
 	"os"
 
+	"github.com/seivanov1986/gocart/helpers"
 	"github.com/seivanov1986/gocart/internal/repository/image"
 )
 
@@ -23,7 +25,13 @@ func (u *service) CreateFolder(ctx context.Context, in ImageCreateFolderIn) erro
 		path = row.Path + in.Name + "/"
 	}
 
-	err := os.MkdirAll("/tmp/project/images"+path, 0777)
+	filePath := "/tmp/project/images" + path
+
+	if helpers.IsExists(filePath) {
+		return fmt.Errorf("file exists")
+	}
+
+	err := os.MkdirAll(filePath, 0777)
 	if err != nil {
 		return err
 	}
