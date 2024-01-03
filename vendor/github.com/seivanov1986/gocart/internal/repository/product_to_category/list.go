@@ -15,6 +15,7 @@ type ProductToCategoryListOut struct {
 }
 
 type ProductToCategoryListRow struct {
+	Id           int64  `db:"id" json:"id"`
 	CategoryID   int64  `db:"id_category" json:"id_category"`
 	NameCategory string `db:"name_category" json:"name_category"`
 }
@@ -24,7 +25,7 @@ func (c *repository) List(ctx context.Context, in ProductToCategoryListInput) (*
 	err := c.db.SelectContext(
 		ctx,
 		&imageRows,
-		`SELECT A.id_category, B.name AS name_category 
+		`SELECT A.id, A.id_category, B.name AS name_category 
 			FROM product_to_category A
 			LEFT JOIN category B 
 			ON A.id_category = B.id

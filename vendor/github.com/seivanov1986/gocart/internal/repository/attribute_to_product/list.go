@@ -10,7 +10,7 @@ type AttributeToProductListOut struct {
 }
 
 type AttributeToProductListRow struct {
-	Id          int64   `db:"id"`
+	Id          int64   `db:"id" json:"id"`
 	IdProduct   int64   `db:"id_product"`
 	IdAttribute int64   `db:"id_attribute"`
 	Name        string  `db:"name"`
