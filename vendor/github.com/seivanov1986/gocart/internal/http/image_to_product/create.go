@@ -7,12 +7,19 @@ import (
 	"net/http"
 
 	"github.com/seivanov1986/gocart/helpers"
+	image_to_product2 "github.com/seivanov1986/gocart/internal/service/image_to_product"
 )
 
 type ImageToProductCreateRpcIn struct {
+	ProductID int64 `json:"id_product"`
+	ImageID   int64 `json:"id_image"`
+}
+
+type ImageToProductCreateRpcOut struct {
 }
 
 type ImageToProductCreateError struct {
+	Error string
 }
 
 func (u *handle) Create(w http.ResponseWriter, r *http.Request) {
@@ -22,17 +29,26 @@ func (u *handle) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = validateImageToProductCreate(bodyBytes)
+	CreateListInput, err := validateImageToProductCreate(bodyBytes)
 	if err != nil {
 		helpers.HttpResponse(w, http.StatusBadRequest)
 		return
 	}
 
-	helpers.HttpResponse(w, http.StatusOK)
+	err = u.service.Create(r.Context(), *CreateListInput)
+	if err != nil {
+		fmt.Println(err)
+		helpers.HttpResponse(w, http.StatusInternalServerError, ImageToProductCreateError{
+			Error: err.Error(),
+		})
+		return
+	}
+
+	helpers.HttpResponse(w, http.StatusOK, ImageToProductCreateRpcOut{})
 }
 
-func validateImageToProductCreate(bodyBytes []byte) ([]int64, error) {
-	listInt := []int64{}
+func validateImageToProductCreate(bodyBytes []byte) (*image_to_product2.ImageToProductCreateInput, error) {
+	listInt := image_to_product2.ImageToProductCreateInput{}
 	userCreateRpcIn := ImageToProductCreateRpcIn{}
 
 	err := json.Unmarshal(bodyBytes, &userCreateRpcIn)
@@ -40,5 +56,8 @@ func validateImageToProductCreate(bodyBytes []byte) ([]int64, error) {
 		return nil, fmt.Errorf(err.Error())
 	}
 
-	return listInt, nil
+	listInt.ProductID = userCreateRpcIn.ProductID
+	listInt.ImageID = userCreateRpcIn.ImageID
+
+	return &listInt, nil
 }

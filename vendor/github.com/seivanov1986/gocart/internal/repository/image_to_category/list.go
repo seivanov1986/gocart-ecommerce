@@ -25,10 +25,7 @@ func (i *repository) List(ctx context.Context, in ImageToCategoryListInput) (*Im
 	err := i.db.SelectContext(
 		ctx,
 		&imageRows,
-		`SELECT itc.id, itc.id_image, CONCAT(i.path, i.name) as path_image
-					FROM image_to_category itc
-					LEFT JOIN image i ON i.id = itc.id_image
-					WHERE id_category = ? LIMIT ?, ?`,
+		i.getQuery(),
 		in.CategoryID, in.Page*limit, limit)
 	if err != nil {
 		return nil, err
@@ -48,4 +45,23 @@ func (i *repository) List(ctx context.Context, in ImageToCategoryListInput) (*Im
 		List:  imageRows,
 		Total: total,
 	}, nil
+}
+
+func (i *repository) getQuery() string {
+	query := ""
+
+	switch i.db.GetDB().DriverName() {
+	case "sqlite3":
+		query = `SELECT itc.id, itc.id_image, i.path || i.name as path_image
+					FROM image_to_category itc
+					LEFT JOIN image i ON i.id = itc.id_image
+					WHERE id_category = ? LIMIT ?, ?`
+	case "mysql":
+		query = `SELECT itc.id, itc.id_image, CONCAT(i.path, i.name) as path_image
+					FROM image_to_category itc
+					LEFT JOIN image i ON i.id = itc.id_image
+					WHERE id_category = ? LIMIT ?, ?`
+	}
+
+	return query
 }

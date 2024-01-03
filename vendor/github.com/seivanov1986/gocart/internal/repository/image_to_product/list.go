@@ -25,10 +25,7 @@ func (i *repository) List(ctx context.Context, in ImageToProductListInput) (*Ima
 	err := i.db.SelectContext(
 		ctx,
 		&imageRows,
-		`SELECT itc.id, itc.id_image, CONCAT(i.path, i.name) as path_image
-					FROM image_to_product itc
-					LEFT JOIN image i ON i.id = itc.id_image
-					WHERE id_product = ? LIMIT ?, ?`,
+		i.getQuery(),
 		in.ProductID, in.Page*limit, limit)
 	if err != nil {
 		return nil, err
@@ -38,7 +35,7 @@ func (i *repository) List(ctx context.Context, in ImageToProductListInput) (*Ima
 	err = i.db.GetContext(
 		ctx,
 		&total,
-		`SELECT COUNT(*) FROM image_to_product WHERE id_category = ?`,
+		`SELECT COUNT(*) FROM image_to_product WHERE id_product = ?`,
 		in.ProductID)
 	if err != nil {
 		return nil, err
@@ -48,4 +45,23 @@ func (i *repository) List(ctx context.Context, in ImageToProductListInput) (*Ima
 		List:  imageRows,
 		Total: total,
 	}, nil
+}
+
+func (i *repository) getQuery() string {
+	query := ""
+
+	switch i.db.GetDB().DriverName() {
+	case "sqlite3":
+		query = `SELECT itc.id, itc.id_image, i.path || i.name as path_image
+					FROM image_to_product itc
+					LEFT JOIN image i ON i.id = itc.id_image
+					WHERE id_product = ? LIMIT ?, ?`
+	case "mysql":
+		query = `SELECT itc.id, itc.id_image, CONCAT(i.path, i.name) as path_image
+					FROM image_to_product itc
+					LEFT JOIN image i ON i.id = itc.id_image
+					WHERE id_product = ? LIMIT ?, ?`
+	}
+
+	return query
 }

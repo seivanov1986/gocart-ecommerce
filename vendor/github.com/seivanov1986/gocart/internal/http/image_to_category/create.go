@@ -16,7 +16,6 @@ type ImageToCategoryCreateRpcIn struct {
 }
 
 type ImageToCategoryCreateRpcOut struct {
-	ID *int64
 }
 
 type ImageToCategoryCreateError struct {
@@ -46,7 +45,7 @@ func (u *handle) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	helpers.HttpResponse(w, http.StatusOK)
+	helpers.HttpResponse(w, http.StatusOK, ImageToCategoryCreateRpcOut{})
 }
 
 func validatePageCreate(bodyBytes []byte) (*image_to_category.ImageToCategoryCreateIn, error) {

@@ -312,8 +312,22 @@ func (g *goCart) InitAdminHandles(router *mux.Router) {
 
 	imageRouter := router.PathPrefix("/image").Subrouter()
 	g.InitImageHandles(imageRouter)
+	imageToProductRouter := imageRouter.PathPrefix("/to_product").Subrouter()
+	g.InitImageToProduct(imageToProductRouter)
+	imageToCategory := imageRouter.PathPrefix("/to_category").Subrouter()
+	g.InitImageToCategory(imageToCategory)
+}
 
-	// image_to_category, image_to_product
+func (g *goCart) InitImageToProduct(router *mux.Router) {
+	handle := g.ImageToProductHandler()
+	router.HandleFunc("/list", handle.List).Methods(http.MethodPost, http.MethodOptions)
+	router.HandleFunc("/create", handle.Create).Methods(http.MethodPost, http.MethodOptions)
+}
+
+func (g *goCart) InitImageToCategory(router *mux.Router) {
+	handle := g.ImageToCategoryHandler()
+	router.HandleFunc("/list", handle.List).Methods(http.MethodPost, http.MethodOptions)
+	router.HandleFunc("/create", handle.Create).Methods(http.MethodPost, http.MethodOptions)
 }
 
 func (g *goCart) InitImageHandles(router *mux.Router) {

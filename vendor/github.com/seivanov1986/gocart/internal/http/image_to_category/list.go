@@ -36,6 +36,7 @@ func (u *handle) List(w http.ResponseWriter, r *http.Request) {
 
 	listOut, err := u.service.List(r.Context(), *PageListInput)
 	if err != nil {
+		fmt.Println(err)
 		helpers.HttpResponse(w, http.StatusInternalServerError)
 		return
 	}
