@@ -36,5 +36,5 @@ func (w *widgetManager) Render(ctx context.Context, name string) (*string, error
 		widget.SetAssets(w.assetManager)
 	}
 
-	return widget.Execute()
+	return widget.Execute(ctx)
 }

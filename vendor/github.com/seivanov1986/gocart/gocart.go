@@ -1,8 +1,10 @@
 package gocart
 
 import (
-	"github.com/seivanov1986/gocart/internal/service/image"
 	"github.com/seivanov1986/sql_client"
+
+	"github.com/seivanov1986/gocart/internal/service/image"
+	"github.com/seivanov1986/gocart/internal/service/yandex_feed"
 
 	"net/http"
 
@@ -24,6 +26,7 @@ import (
 	"github.com/seivanov1986/gocart/internal/http/product_to_category"
 	"github.com/seivanov1986/gocart/internal/http/sefurl"
 	"github.com/seivanov1986/gocart/internal/http/user"
+	yandexHandle "github.com/seivanov1986/gocart/internal/http/yandex"
 	auth2 "github.com/seivanov1986/gocart/internal/middleware/auth"
 	"github.com/seivanov1986/gocart/internal/middleware/common"
 	"github.com/seivanov1986/gocart/internal/middleware/cors"
@@ -41,8 +44,9 @@ import (
 	sefUrlService "github.com/seivanov1986/gocart/internal/service/sefurl"
 	userService "github.com/seivanov1986/gocart/internal/service/user"
 
-	"github.com/seivanov1986/gocart/client"
 	exampleAjax "github.com/seivanov1986/gocart/internal/ajax/example"
+
+	"github.com/seivanov1986/gocart/client"
 	"github.com/seivanov1986/gocart/internal/http/attribute_to_product"
 	"github.com/seivanov1986/gocart/internal/widget/example"
 )
@@ -436,4 +440,11 @@ func (g *goCart) InitAttributeHandles(router *mux.Router) {
 func (g *goCart) InitAjaxManager(manager client.AjaxManager) {
 	ajaxHandler := exampleAjax.New()
 	manager.RegisterPath("inexample", ajaxHandler)
+}
+
+func (g *goCart) InitYandexHandles(router *mux.Router) {
+	hub := repository.New(g.database, g.transactionManager)
+	service := yandex_feed.New(hub)
+	handle := yandexHandle.New(service)
+	router.HandleFunc("/feed", handle.Feed).Methods(http.MethodGet)
 }

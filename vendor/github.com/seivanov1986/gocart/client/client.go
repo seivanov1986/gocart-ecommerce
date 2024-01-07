@@ -14,7 +14,7 @@ type WidgetManager interface {
 }
 
 type Widget interface {
-	Execute() (*string, error)
+	Execute(ctx context.Context) (*string, error)
 	SetAssets(assetManager AssetManager)
 }
 

@@ -22,7 +22,7 @@ github.com/pressly/goose/v3/internal/dialect
 github.com/pressly/goose/v3/internal/dialect/dialectquery
 github.com/pressly/goose/v3/internal/sqlparser
 github.com/pressly/goose/v3/lock
-# github.com/seivanov1986/gocart v0.0.0-20240102131212-70633d7d9e9a
+# github.com/seivanov1986/gocart v0.0.0-20240106091516-f6b6a1235b27
 ## explicit; go 1.21.3
 github.com/seivanov1986/gocart
 github.com/seivanov1986/gocart/client
@@ -49,6 +49,7 @@ github.com/seivanov1986/gocart/internal/http/product
 github.com/seivanov1986/gocart/internal/http/product_to_category
 github.com/seivanov1986/gocart/internal/http/sefurl
 github.com/seivanov1986/gocart/internal/http/user
+github.com/seivanov1986/gocart/internal/http/yandex
 github.com/seivanov1986/gocart/internal/middleware/auth
 github.com/seivanov1986/gocart/internal/middleware/common
 github.com/seivanov1986/gocart/internal/middleware/cors
@@ -79,6 +80,7 @@ github.com/seivanov1986/gocart/internal/service/product
 github.com/seivanov1986/gocart/internal/service/product_to_category
 github.com/seivanov1986/gocart/internal/service/sefurl
 github.com/seivanov1986/gocart/internal/service/user
+github.com/seivanov1986/gocart/internal/service/yandex_feed
 github.com/seivanov1986/gocart/internal/widget/example
 # github.com/seivanov1986/sql_client v0.0.0-20231226205548-25e6926909fc
 ## explicit; go 1.21
@@ -94,12 +96,12 @@ go.uber.org/multierr
 ## explicit; go 1.18
 golang.org/x/crypto/bcrypt
 golang.org/x/crypto/blowfish
-# golang.org/x/image v0.14.0
+# golang.org/x/image v0.15.0
 ## explicit; go 1.18
 golang.org/x/image/bmp
 golang.org/x/image/ccitt
 golang.org/x/image/tiff
 golang.org/x/image/tiff/lzw
-# golang.org/x/sync v0.5.0
+# golang.org/x/sync v0.6.0
 ## explicit; go 1.18
 golang.org/x/sync/errgroup

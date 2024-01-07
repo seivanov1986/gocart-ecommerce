@@ -1,6 +1,8 @@
 package header_widget
 
 import (
+	"context"
+
 	"github.com/seivanov1986/gocart/client"
 )
 
@@ -12,7 +14,7 @@ func New() *widget {
 	return &widget{}
 }
 
-func (l *widget) Execute() (*string, error) {
+func (l *widget) Execute(ctx context.Context) (*string, error) {
 	if l.assetManager == nil {
 		return nil, nil
 	}

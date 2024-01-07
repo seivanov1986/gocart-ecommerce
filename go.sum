@@ -109,6 +109,8 @@ github.com/seivanov1986/gocart v0.0.0-20240102125119-7d5d83a5d5f1 h1:b+2ch5BQP4i
 github.com/seivanov1986/gocart v0.0.0-20240102125119-7d5d83a5d5f1/go.mod h1:NkmkN095fuYdKr+KSWd5ZMMp5jswvylPBf3KW0vjNYE=
 github.com/seivanov1986/gocart v0.0.0-20240102131212-70633d7d9e9a h1:wACkLLFY/LJJC/4rb8Ku6eTh4UtrbhWvBjD2MEQy+5A=
 github.com/seivanov1986/gocart v0.0.0-20240102131212-70633d7d9e9a/go.mod h1:RMiaL5GCG3GZ5Mcx8/YZCqG2oxjViCJNHQbsbPXqxM4=
+github.com/seivanov1986/gocart v0.0.0-20240106091516-f6b6a1235b27 h1:J3HozmD0OQeXTtfJ5euh6VPu5v0Ryffoi9yGuUpTC6s=
+github.com/seivanov1986/gocart v0.0.0-20240106091516-f6b6a1235b27/go.mod h1:RMiaL5GCG3GZ5Mcx8/YZCqG2oxjViCJNHQbsbPXqxM4=
 github.com/seivanov1986/sql_client v0.0.0-20231226205548-25e6926909fc h1:LuqrRpRiv3LCcRqcQpUOvseWBi1oG/JTFAPWuBPDB2g=
 github.com/seivanov1986/sql_client v0.0.0-20231226205548-25e6926909fc/go.mod h1:t/PGhhVvow3Cv8lO2FnyKCV4mfkG2ocJuXSbr8XMpbM=
 github.com/sethvargo/go-retry v0.2.4 h1:T+jHEQy/zKJf5s95UkguisicE0zuF9y7+/vgz08Ocec=
@@ -142,12 +144,16 @@ golang.org/x/crypto v0.17.0/go.mod h1:gCAAfMLgwOJRpTjQ2zCCt2OcSfYMTeZVSRtQlPC7Nq
 golang.org/x/image v0.0.0-20191009234506-e7c1f5e7dbb8/go.mod h1:FeLwcggjj3mMvU+oOTbSwawSJRM1uh48EjtB4UJZlP0=
 golang.org/x/image v0.14.0 h1:tNgSxAFe3jC4uYqvZdTr84SZoM1KfwdC9SKIFrLjFn4=
 golang.org/x/image v0.14.0/go.mod h1:HUYqC05R2ZcZ3ejNQsIHQDQiwWM4JBqmm6MKANTp4LE=
+golang.org/x/image v0.15.0 h1:kOELfmgrmJlw4Cdb7g/QGuB3CvDrXbqEIww/pNtNBm8=
+golang.org/x/image v0.15.0/go.mod h1:HUYqC05R2ZcZ3ejNQsIHQDQiwWM4JBqmm6MKANTp4LE=
 golang.org/x/mod v0.14.0 h1:dGoOF9QVLYng8IHTm7BAyWqCqSheQ5pYWGhzW00YJr0=
 golang.org/x/mod v0.14.0/go.mod h1:hTbmBsO62+eylJbnUtE2MGJUyE7QWk4xUqPFrRgJ+7c=
 golang.org/x/net v0.19.0 h1:zTwKpTd2XuCqf8huc7Fo2iSy+4RHPd10s4KzeTnVr1c=
 golang.org/x/net v0.19.0/go.mod h1:CfAk/cbD4CthTvqiEl8NpboMuiuOYsAr/7NOjZJtv1U=
 golang.org/x/sync v0.5.0 h1:60k92dhOjHxJkrqnwsfl8KuaHbn/5dl0lUPUklKo3qE=
 golang.org/x/sync v0.5.0/go.mod h1:Czt+wKu1gCyEFDUtn0jG5QVvpJ6rzVqr5aXyt9drQfk=
+golang.org/x/sync v0.6.0 h1:5BMeUDZ7vkXGfEr1x9B4bRcTH4lpkTkpdh0T/J+qjbQ=
+golang.org/x/sync v0.6.0/go.mod h1:Czt+wKu1gCyEFDUtn0jG5QVvpJ6rzVqr5aXyt9drQfk=
 golang.org/x/sys v0.15.0 h1:h48lPFYpsTvQJZF4EKyI4aLHaev3CxivZmv7yZig9pc=
 golang.org/x/sys v0.15.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=

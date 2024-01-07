@@ -19,7 +19,7 @@ func (i *repository) ListLimitId(ctx context.Context, offsetID int64) ([]SefUrlL
 	err := i.db.SelectContext(
 		ctx,
 		&pageRows,
-		`SELECT id, url, path, name, type, id_object FROM sefurl WHERE id > ? LIMIT ?`,
+		`SELECT id, url, path, name, type, id_object, template FROM sefurl WHERE id > ? LIMIT ?`,
 		offsetID, limit)
 	if err != nil {
 		return nil, err

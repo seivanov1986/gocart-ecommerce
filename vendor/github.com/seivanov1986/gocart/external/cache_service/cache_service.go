@@ -1,6 +1,7 @@
 package cache_service
 
 import (
+	"fmt"
 	"context"
 	"github.com/seivanov1986/gocart/client"
 )
@@ -19,5 +20,8 @@ func New(cacheBuilder client.CacheBuilder) *cacheService {
 
 func (c *cacheService) Make(ctx context.Context) {
 	pages, _ := c.cacheBuilder.Pages(ctx)
-	c.cacheBuilder.Handler(ctx, pages)
+	err := c.cacheBuilder.Handler(ctx, pages)
+	if err != nil {
+		fmt.Println(err)
+	}
 }

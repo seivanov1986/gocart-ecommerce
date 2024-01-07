@@ -1,6 +1,8 @@
 package example
 
 import (
+	"context"
+
 	"github.com/seivanov1986/gocart/client"
 )
 
@@ -12,7 +14,7 @@ func New() *loggerPlugin {
 	return &loggerPlugin{}
 }
 
-func (l *loggerPlugin) Execute() (*string, error) {
+func (l *loggerPlugin) Execute(ctx context.Context) (*string, error) {
 	result := "input Logger is inactive"
 	return &result, nil
 }
