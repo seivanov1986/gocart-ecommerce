@@ -83,8 +83,20 @@ func (b *builder) Handler(ctx context.Context, pages []client.UrlListRow) error 
 }
 
 func (b *builder) RenderObject(ctx context.Context, url string) ([]byte, error) {
-	// TODO sefurl->readbyurl
-	return b.makeObject(ctx, client.SefUrlItem{})
+	row, err := b.hub.SefUrl().Read(ctx, url)
+	if err != nil {
+		return nil, err
+	}
+
+	return b.makeObject(ctx, client.SefUrlItem{
+		ID:       row.ID,
+		Url:      row.Url,
+		Path:     row.Path,
+		Name:     row.Name,
+		Type:     row.Type,
+		IdObject: row.ObjectID,
+		Template: row.Template,
+	})
 }
 
 func (b *builder) makeObject(ctx context.Context, row client.SefUrlItem) ([]byte, error) {

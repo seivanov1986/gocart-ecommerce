@@ -16,7 +16,7 @@ func (u *handle) Process(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// TODO if not found - try to render
-	u.cacheBuilder.RenderObject(r.Context(), path)
+	// bytes, err := u.cacheBuilder.RenderObject(r.Context(), path)
 
 	_, err = w.Write(bytes)
 	if err != nil {
