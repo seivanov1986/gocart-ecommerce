@@ -4,6 +4,10 @@ import (
 	"sync"
 )
 
+type CacheObject interface {
+	AddEvent()
+}
+
 var Cache *cache
 
 type cache struct {

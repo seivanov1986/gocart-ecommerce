@@ -1,6 +1,7 @@
 package gocart
 
 import (
+	"github.com/seivanov1986/gocart/external/cache"
 	"github.com/seivanov1986/sql_client"
 
 	"github.com/seivanov1986/gocart/internal/service/image"
@@ -206,7 +207,7 @@ func (g *goCart) ProductHandler() product.Handle {
 
 	hub := repository.New(g.database, g.transactionManager)
 	service := productService.New(hub, g.transactionManager)
-	return product.New(service)
+	return product.New(service, cache.Cache)
 }
 
 func (g *goCart) ProductToCategoryHandler() product_to_category.Handle {
@@ -215,7 +216,7 @@ func (g *goCart) ProductToCategoryHandler() product_to_category.Handle {
 
 	hub := repository.New(g.database, g.transactionManager)
 	service := productToCategoryService.New(hub)
-	return product_to_category.New(service)
+	return product_to_category.New(service, cache.Cache)
 }
 
 func (g *goCart) SefUrlHandler() sefurl.Handle {
@@ -347,7 +348,7 @@ func (g *goCart) InitImageHandles(router *mux.Router) {
 func (g *goCart) InitProductToCategoryHandles(router *mux.Router) {
 	hub := repository.New(g.database, g.transactionManager)
 	service := productToCategoryService.New(hub)
-	handle := product_to_category.New(service)
+	handle := product_to_category.New(service, cache.Cache)
 
 	router.HandleFunc("/create", handle.Create).Methods(http.MethodPost, http.MethodOptions)
 	router.HandleFunc("/delete", handle.Delete).Methods(http.MethodPost, http.MethodOptions)
@@ -402,7 +403,7 @@ func (g *goCart) InitCategoryHandles(router *mux.Router) {
 func (g *goCart) InitProductHandles(router *mux.Router) {
 	hub := repository.New(g.database, g.transactionManager)
 	productService := productService.New(hub, g.transactionManager)
-	productHandle := product.New(productService)
+	productHandle := product.New(productService, cache.Cache)
 
 	router.HandleFunc("/create", productHandle.Create).Methods(http.MethodPost, http.MethodOptions)
 	router.HandleFunc("/read", productHandle.Read).Methods(http.MethodPost, http.MethodOptions)

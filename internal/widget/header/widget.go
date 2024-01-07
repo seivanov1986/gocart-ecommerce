@@ -14,7 +14,7 @@ func New() *widget {
 	return &widget{}
 }
 
-func (l *widget) Execute(ctx context.Context) (*string, error) {
+func (l *widget) Execute(ctx context.Context, url client.SefUrlItem) (*string, error) {
 	if l.assetManager == nil {
 		return nil, nil
 	}

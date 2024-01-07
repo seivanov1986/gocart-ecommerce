@@ -8,13 +8,13 @@ import (
 )
 
 type WidgetManager interface {
-	Render(ctx context.Context, name string) (*string, error)
+	Render(ctx context.Context, name string, url SefUrlItem) (*string, error)
 	Register(name string, widget Widget)
 	SetAssets(assetManager AssetManager)
 }
 
 type Widget interface {
-	Execute(ctx context.Context) (*string, error)
+	Execute(ctx context.Context, url SefUrlItem) (*string, error)
 	SetAssets(assetManager AssetManager)
 }
 
@@ -79,4 +79,14 @@ type AssetManager interface {
 	GetCssTemplate() string
 	GetPreloadList() []ResultList
 	GetPreloadTemplate() string
+}
+
+type SefUrlItem struct {
+	ID       int64   `db:"id" json:"id"`
+	Url      string  `db:"url" json:"url"`
+	Path     string  `db:"path" json:"path"`
+	Name     string  `db:"name" json:"name"`
+	Type     int64   `db:"type" json:"type"`
+	IdObject int64   `db:"id_object" json:"id_object"`
+	Template *string `db:"template" json:"template"`
 }

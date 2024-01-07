@@ -14,7 +14,7 @@ func New() *loggerPlugin {
 	return &loggerPlugin{}
 }
 
-func (l *loggerPlugin) Execute(ctx context.Context) (*string, error) {
+func (l *loggerPlugin) Execute(ctx context.Context, url client.SefUrlItem) (*string, error) {
 	result := "input Logger is inactive"
 	return &result, nil
 }

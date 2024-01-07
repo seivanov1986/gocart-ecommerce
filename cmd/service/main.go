@@ -55,7 +55,7 @@ func main() {
 	ajaxManager.RegisterPath("outexample", ajaxExample.New())
 	widgetManger.Register("exampleout", example.New())
 	widgetManger.Register("header", header_widget.New())
-	widgetManger.Register("productlist", widget.NewProductList())
+	widgetManger.Register("productlist", widget.NewProductList(sqliteDBClient))
 
 	sessionManager := session_manager.New()
 

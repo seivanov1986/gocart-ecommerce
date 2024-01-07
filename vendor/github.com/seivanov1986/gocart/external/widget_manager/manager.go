@@ -26,7 +26,7 @@ func (w *widgetManager) Register(name string, widget client.Widget) {
 	w.widgets[name] = widget
 }
 
-func (w *widgetManager) Render(ctx context.Context, name string) (*string, error) {
+func (w *widgetManager) Render(ctx context.Context, name string, url client.SefUrlItem) (*string, error) {
 	widget, ok := w.widgets[name]
 	if !ok {
 		return nil, fmt.Errorf("widget not found")
@@ -36,5 +36,5 @@ func (w *widgetManager) Render(ctx context.Context, name string) (*string, error
 		widget.SetAssets(w.assetManager)
 	}
 
-	return widget.Execute(ctx)
+	return widget.Execute(ctx, url)
 }
