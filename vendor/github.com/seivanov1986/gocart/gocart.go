@@ -104,6 +104,7 @@ type goCart struct {
 	transactionManager sql_client.TransactionManager
 	sessionManager     client.SessionManager
 	cacheBuilder       client.CacheBuilder
+	cacheService       cache_service.CacheService
 	widgetManager      client.WidgetManager
 	buildInWidgets     []string
 }
@@ -230,7 +231,7 @@ func (g *goCart) SefUrlHandler() sefurl.Handle {
 
 func (g *goCart) CommonHandler() commonHandle.Handle {
 	service := commonService.New()
-	return commonHandle.New(service)
+	return commonHandle.New(service, g.cacheBuilder)
 }
 
 func (g *goCart) AuthMiddleware() auth2.Middleware {
@@ -265,9 +266,15 @@ func (g *goCart) checkSessionManager() {
 }
 
 func (g *goCart) CacheService() cache_service.CacheService {
+	if g.cacheService != nil {
+		return g.cacheService
+	}
+
 	if g.cacheBuilder != nil {
 		g.cacheBuilder.RegisterWidget("example", example.New())
-		return cache_service.New(g.cacheBuilder)
+		service := cache_service.New(g.cacheBuilder)
+		g.cacheService = service
+		return service
 	}
 
 	g.checkDatabase()
@@ -278,8 +285,10 @@ func (g *goCart) CacheService() cache_service.CacheService {
 		g.widgetManager = widget_manager.New()
 	}
 
-	cacheBuilder := cache_builder.NewBuilder(hub, g.widgetManager)
-	return cache_service.New(cacheBuilder)
+	g.cacheBuilder = cache_builder.NewBuilder(hub, g.widgetManager)
+	service := cache_service.New(g.cacheBuilder)
+	g.cacheService = service
+	return service
 }
 
 func (g *goCart) InitAuthHandles(router *mux.Router) {

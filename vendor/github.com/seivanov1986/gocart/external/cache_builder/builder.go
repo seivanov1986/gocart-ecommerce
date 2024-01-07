@@ -18,7 +18,6 @@ import (
 	"github.com/seivanov1986/gocart/internal/repository"
 	"github.com/seivanov1986/gocart/internal/repository/page"
 	"github.com/seivanov1986/gocart/internal/repository/product"
-	"github.com/seivanov1986/gocart/internal/repository/sefurl"
 )
 
 type builder struct {
@@ -57,7 +56,21 @@ func (b *builder) Handler(ctx context.Context, pages []client.UrlListRow) error 
 		}
 
 		for _, row := range rows {
-			err := b.makeObject(ctx, row)
+			content, err := b.makeObject(ctx, client.SefUrlItem{
+				ID:       row.ID,
+				Url:      row.Url,
+				Path:     row.Path,
+				Name:     row.Name,
+				Type:     row.Type,
+				IdObject: row.IdObject,
+				Template: row.Template,
+			})
+			if err != nil {
+				return err
+			}
+
+			fileName := helpers.GetFileNameByUrl(row.Url)
+			err = helpers.SaveFile("/tmp/cache/"+fileName, bytes.NewReader(content))
 			if err != nil {
 				return err
 			}
@@ -69,8 +82,14 @@ func (b *builder) Handler(ctx context.Context, pages []client.UrlListRow) error 
 	return nil
 }
 
-func (b *builder) makeObject(ctx context.Context, row sefurl.SefUrlListLimitIdRow) (err error) {
+func (b *builder) RenderObject(ctx context.Context, url string) ([]byte, error) {
+	// TODO sefurl->readbyurl
+	return b.makeObject(ctx, client.SefUrlItem{})
+}
+
+func (b *builder) makeObject(ctx context.Context, row client.SefUrlItem) ([]byte, error) {
 	var content []byte
+	var err error
 
 	switch row.Type {
 	case 1:
@@ -80,14 +99,13 @@ func (b *builder) makeObject(ctx context.Context, row sefurl.SefUrlListLimitIdRo
 	case 3:
 		content, err = b.renderProduct(ctx, row)
 	default:
-		return fmt.Errorf("sefUrl type is not defined")
+		return nil, fmt.Errorf("sefUrl type is not defined")
 	}
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	fileName := helpers.GetFileNameByUrl(row.Url)
-	return helpers.SaveFile("/tmp/cache/"+fileName, bytes.NewReader(content))
+	return content, err
 }
 
 func (b *builder) getPageData(ctx context.Context, idObject int64) map[string]interface{} {
@@ -110,16 +128,7 @@ func (b *builder) getPageData(ctx context.Context, idObject int64) map[string]in
 	return result
 }
 
-func (b *builder) renderPage(ctx context.Context, row sefurl.SefUrlListLimitIdRow) ([]byte, error) {
-	sefUrlItem := client.SefUrlItem{
-		ID:       row.ID,
-		Url:      row.Url,
-		Path:     row.Path,
-		Name:     row.Name,
-		Type:     row.Type,
-		IdObject: row.IdObject,
-		Template: row.Template,
-	}
+func (b *builder) renderPage(ctx context.Context, row client.SefUrlItem) ([]byte, error) {
 	serviceBasePath := observer.GetServiceBasePath(ctx)
 
 	layoutName := "page"
@@ -167,7 +176,7 @@ func (b *builder) renderPage(ctx context.Context, row sefurl.SefUrlListLimitIdRo
 
 	content := buf.String()
 
-	b.widgetManager.Render(ctx, "header", sefUrlItem)
+	b.widgetManager.Render(ctx, "header", row)
 
 	reg, _ := regexp.Compile(`{#outertemplate%([A-Za-z_0-9]+)#}`)
 	for _, match := range reg.FindAllStringSubmatch(content, -1) {
@@ -176,7 +185,7 @@ func (b *builder) renderPage(ctx context.Context, row sefurl.SefUrlListLimitIdRo
 			match_1 = match[2]
 		}
 
-		res, _ := b.widgetManager.Render(ctx, match_1, sefUrlItem)
+		res, _ := b.widgetManager.Render(ctx, match_1, row)
 		if res != nil {
 			content = strings.Replace(content, match[0], *res, -1)
 		}
@@ -209,16 +218,7 @@ func (b *builder) getCategoryData(ctx context.Context, idObject int64) map[strin
 	return result
 }
 
-func (b *builder) renderCategory(ctx context.Context, row sefurl.SefUrlListLimitIdRow) ([]byte, error) {
-	sefUrlItem := client.SefUrlItem{
-		ID:       row.ID,
-		Url:      row.Url,
-		Path:     row.Path,
-		Name:     row.Name,
-		Type:     row.Type,
-		IdObject: row.IdObject,
-		Template: row.Template,
-	}
+func (b *builder) renderCategory(ctx context.Context, row client.SefUrlItem) ([]byte, error) {
 	serviceBasePath := observer.GetServiceBasePath(ctx)
 
 	layoutName := "category"
@@ -264,7 +264,7 @@ func (b *builder) renderCategory(ctx context.Context, row sefurl.SefUrlListLimit
 			match_1 = match[2]
 		}
 
-		res, _ := b.widgetManager.Render(ctx, match_1, sefUrlItem)
+		res, _ := b.widgetManager.Render(ctx, match_1, row)
 		if res != nil {
 			content = strings.Replace(content, match[0], *res, -1)
 		}
@@ -293,16 +293,7 @@ func (b *builder) getProductData(ctx context.Context, idObject int64) map[string
 	return result
 }
 
-func (b *builder) renderProduct(ctx context.Context, row sefurl.SefUrlListLimitIdRow) ([]byte, error) {
-	sefUrlItem := client.SefUrlItem{
-		ID:       row.ID,
-		Url:      row.Url,
-		Path:     row.Path,
-		Name:     row.Name,
-		Type:     row.Type,
-		IdObject: row.IdObject,
-		Template: row.Template,
-	}
+func (b *builder) renderProduct(ctx context.Context, row client.SefUrlItem) ([]byte, error) {
 	serviceBasePath := observer.GetServiceBasePath(ctx)
 
 	layoutName := "product"
@@ -348,7 +339,7 @@ func (b *builder) renderProduct(ctx context.Context, row sefurl.SefUrlListLimitI
 			match_1 = match[2]
 		}
 
-		res, _ := b.widgetManager.Render(ctx, match_1, sefUrlItem)
+		res, _ := b.widgetManager.Render(ctx, match_1, row)
 		if res != nil {
 			content = strings.Replace(content, match[0], *res, -1)
 		}

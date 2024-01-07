@@ -40,6 +40,7 @@ type CacheBuilder interface {
 	Pages(ctx context.Context) ([]UrlListRow, error)
 	Handler(ctx context.Context, pages []UrlListRow) error
 	RegisterWidget(name string, widget Widget)
+	RenderObject(ctx context.Context, url string) ([]byte, error)
 }
 
 type SessionManager interface {

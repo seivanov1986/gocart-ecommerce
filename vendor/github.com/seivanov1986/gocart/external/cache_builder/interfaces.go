@@ -5,5 +5,5 @@ import (
 )
 
 type Service interface {
-	Make(ctx context.Context) error
+	RenderObject(ctx context.Context, url string) ([]byte, error)
 }
