@@ -56,6 +56,7 @@ func main() {
 	widgetManger.Register("exampleout", example.New())
 	widgetManger.Register("header", header_widget.New())
 	widgetManger.Register("productlist", widget.NewProductList(sqliteDBClient))
+	widgetManger.Register("postlist", widget.NewPostList(sqliteDBClient))
 
 	sessionManager := session_manager.New()
 

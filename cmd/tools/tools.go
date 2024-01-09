@@ -17,14 +17,14 @@ const (
 )
 
 func main() {
-	content, err := os.ReadFile("file.html")
+	content, err := os.ReadFile("/Users/seivanov/shop/gocart-ecommerce/schemes/templates/layouts/category.html")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	//getImg(string(content))
-	getHref(string(content))
+	getImg(string(content))
+	//getHref(string(content))
 }
 
 func getHref(content string) {

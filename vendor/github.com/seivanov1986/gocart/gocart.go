@@ -172,7 +172,7 @@ func (g *goCart) CategoryHandler() category.Handle {
 
 	hub := repository.New(g.database, g.transactionManager)
 	service := categoryService.New(hub, g.transactionManager)
-	return category.New(service)
+	return category.New(service, cache.Cache)
 }
 
 func (g *goCart) ImageToCategoryHandler() image_to_category.Handle {
@@ -199,7 +199,7 @@ func (g *goCart) PageHandler() page.Handle {
 
 	hub := repository.New(g.database, g.transactionManager)
 	service := pageService.New(hub, g.transactionManager)
-	return page.New(service)
+	return page.New(service, cache.Cache)
 }
 
 func (g *goCart) ProductHandler() product.Handle {
@@ -386,7 +386,7 @@ func (g *goCart) InitSefurlHandles(router *mux.Router) {
 func (g *goCart) InitPageHandles(router *mux.Router) {
 	hub := repository.New(g.database, g.transactionManager)
 	pageService := pageService.New(hub, g.transactionManager)
-	pageHandle := page.New(pageService)
+	pageHandle := page.New(pageService, cache.Cache)
 
 	router.HandleFunc("/create", pageHandle.Create).Methods(http.MethodPost, http.MethodOptions)
 	router.HandleFunc("/read", pageHandle.Read).Methods(http.MethodPost, http.MethodOptions)
@@ -398,7 +398,7 @@ func (g *goCart) InitPageHandles(router *mux.Router) {
 func (g *goCart) InitCategoryHandles(router *mux.Router) {
 	hub := repository.New(g.database, g.transactionManager)
 	categoryService := categoryService.New(hub, g.transactionManager)
-	categoryHandle := category.New(categoryService)
+	categoryHandle := category.New(categoryService, cache.Cache)
 
 	router.HandleFunc("/create", categoryHandle.Create).Methods(http.MethodPost, http.MethodOptions)
 	router.HandleFunc("/read", categoryHandle.Read).Methods(http.MethodPost, http.MethodOptions)

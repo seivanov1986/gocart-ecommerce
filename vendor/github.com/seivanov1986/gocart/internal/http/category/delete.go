@@ -39,6 +39,8 @@ func (u *handle) Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	u.cacheObject.AddEvent()
+
 	helpers.HttpResponse(w, http.StatusOK)
 }
 

@@ -146,15 +146,6 @@ func (b *builder) renderPage(ctx context.Context, row client.SefUrlItem) ([]byte
 	layoutName := "page"
 	if row.Template != nil && *row.Template != "" {
 		layoutName = *row.Template
-	} else {
-		switch row.Type {
-		case 0:
-			layoutName = "page"
-		case 1:
-			layoutName = "post"
-		case 2:
-			layoutName = "nova"
-		}
 	}
 
 	layoutFile := []string{
