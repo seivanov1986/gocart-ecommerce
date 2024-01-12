@@ -22,7 +22,7 @@ github.com/pressly/goose/v3/internal/dialect
 github.com/pressly/goose/v3/internal/dialect/dialectquery
 github.com/pressly/goose/v3/internal/sqlparser
 github.com/pressly/goose/v3/lock
-# github.com/seivanov1986/gocart v0.0.0-20240106091516-f6b6a1235b27
+# github.com/seivanov1986/gocart v0.0.0-20240109194136-b9d53ac6c286
 ## explicit; go 1.21.3
 github.com/seivanov1986/gocart
 github.com/seivanov1986/gocart/client
@@ -82,7 +82,7 @@ github.com/seivanov1986/gocart/internal/service/sefurl
 github.com/seivanov1986/gocart/internal/service/user
 github.com/seivanov1986/gocart/internal/service/yandex_feed
 github.com/seivanov1986/gocart/internal/widget/example
-# github.com/seivanov1986/sql_client v0.0.0-20231226205548-25e6926909fc
+# github.com/seivanov1986/sql_client v0.0.0-20240111072212-1faa55d1d30e
 ## explicit; go 1.21
 github.com/seivanov1986/sql_client
 github.com/seivanov1986/sql_client/sqlite
@@ -92,7 +92,7 @@ github.com/sethvargo/go-retry
 # go.uber.org/multierr v1.11.0
 ## explicit; go 1.19
 go.uber.org/multierr
-# golang.org/x/crypto v0.17.0
+# golang.org/x/crypto v0.18.0
 ## explicit; go 1.18
 golang.org/x/crypto/bcrypt
 golang.org/x/crypto/blowfish
